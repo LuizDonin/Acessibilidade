@@ -11,7 +11,7 @@ function Header() {
         <div className="flex items-center gap-3 mb-2">
           <img
             src="images/icon.png"
-            alt="Ícone"
+            alt="Ilustração da capa do livro Produção de Textos, 6º ano."
             className="w-24 h-29 object-contain -mt-7"
           />
           <div className="flex flex-col">

@@ -1,19 +1,22 @@
 import { useState, useEffect } from 'react';
 import jsPDF from 'jspdf';
 import DownloadButton from './DownloadButton';
+import type { ContrastMode } from '../types/accessibility';
 
 interface ProducaoTextoProps {
   instanceId?: string; // ID único para esta instância
   title?: string; // Título customizado (opcional)
   pdfTitle?: string; // Título do PDF (opcional)
   pdfFileName?: string; // Nome do arquivo PDF (opcional)
+  contrastMode?: ContrastMode;
 }
 
 function ProducaoTexto({ 
   instanceId = 'producaoTexto',
   title = 'Produção de texto – Minha versão',
   pdfTitle = 'Produção de texto – Minha versão',
-  pdfFileName = 'minha-versao-producao-texto.pdf'
+  pdfFileName = 'minha-versao-producao-texto.pdf',
+  contrastMode = 'default',
 }: ProducaoTextoProps) {
   const [texto, setTexto] = useState('');
 
@@ -84,12 +87,12 @@ function ProducaoTexto({
       <div className="flex items-center gap-3 mb-6">
         <img
           src="images/producaoTexto.png"
-          alt="Trilha do texto"
+          alt="Ilustração decorativa da seção Produção de texto."
           className="object-contain"
         />
         <h2
           style={{
-            color: '#0E3B5D',
+            color: 'var(--book-chapter-label, #0E3B5D)',
             fontFamily: 'hwt-artz',
             fontSize: '26px',
             fontStyle: 'normal',
@@ -108,14 +111,14 @@ function ProducaoTexto({
         placeholder="Digite sua produção de texto aqui..."
         className="w-full p-4 border-2 border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent resize-y min-h-[400px] text-black mb-6"
         style={{
-          fontFamily: 'Ubuntu, sans-serif',
+          fontFamily: 'var(--book-font-body)',
           fontSize: '14px',
           lineHeight: '1.6',
         }}
       />
 
       {/* Botão de download */}
-      <DownloadButton onClick={handleDownload} disabled={!texto.trim()} />
+      <DownloadButton onClick={handleDownload} disabled={!texto.trim()} contrastMode={contrastMode} />
     </div>
   );
 }

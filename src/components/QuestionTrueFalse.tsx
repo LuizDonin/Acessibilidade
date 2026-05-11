@@ -23,9 +23,9 @@ function QuestionTrueFalse({
         {/* Título principal com número */}
         <p className="mb-4">
           {question.number !== undefined && (
-            <span style={{ color: '#00776E', fontWeight: 'bold' }}>{question.number}. </span>
+            <span style={{ color: 'var(--book-text-h4)', fontWeight: 'bold' }}>{question.number}. </span>
           )}
-          <span style={{ color: 'black' }} dangerouslySetInnerHTML={{ __html: question.question }} />
+          <span style={{ color: 'var(--book-text-body)' }} dangerouslySetInnerHTML={{ __html: question.question }} />
         </p>
 
         {/* Afirmações */}
@@ -37,7 +37,7 @@ function QuestionTrueFalse({
 
             return (
               <div key={stmt.letter} className="flex items-start gap-2">
-                <span style={{ color: '#00776E', fontWeight: 'bold' }}>{stmt.letter}) </span>
+                <span style={{ color: 'var(--book-text-h4)', fontWeight: 'bold' }}>{stmt.letter}) </span>
                 <div className="flex gap-2 flex-shrink-0">
                   {[true, false].map((value) => {
                     const label = value ? 'V' : 'F';
@@ -53,7 +53,7 @@ function QuestionTrueFalse({
                               : showResults && !isCorrect
                               ? 'bg-red-200 border-2 border-red-600 text-red-800'
                               : 'bg-blue-200 border-2 border-blue-600 text-blue-900'
-                            : 'bg-white hover:bg-gray-100 border-2 border-gray-300 text-gray-700'
+                            : 'bg-[color:var(--book-bg-page)] hover:opacity-90 border-2 border-[color:var(--book-interactive-accent)] text-[color:var(--book-text-body)]'
                         }`}
                       >
                         <input
@@ -70,7 +70,7 @@ function QuestionTrueFalse({
                     );
                   })}
                 </div>
-                <p className="mb-0" style={{ color: 'black' }}>
+                <p className="mb-0" style={{ color: 'var(--book-text-body)' }}>
                   <span dangerouslySetInnerHTML={{ __html: stmt.statement }} />
                 </p>
               </div>
@@ -86,9 +86,12 @@ function QuestionTrueFalse({
               onChange={(e) => onAnswerChange(correctionId, e.target.value)}
               placeholder={question.correctionPlaceholder || 'Corrija as afirmações falsas aqui...'}
               disabled={showResults}
-              className="w-full p-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent resize-y min-h-[100px] text-black"
+              className="w-full p-3 border rounded-lg focus:outline-none resize-y min-h-[100px]"
               style={{
                 fontFamily: 'inherit',
+                color: 'var(--book-text-body)',
+                borderColor: 'var(--book-interactive-accent)',
+                backgroundColor: 'var(--book-bg-page)',
               }}
             />
           </div>
@@ -134,7 +137,7 @@ function QuestionTrueFalse({
                     : showResults && !isCorrect
                     ? 'bg-red-200 border-2 border-red-600 text-red-800 font-semibold'
                     : 'bg-purple-200 border-2 border-purple-600 text-purple-900 font-semibold'
-                  : 'bg-white hover:bg-gray-100 border-2 border-gray-300'
+                  : 'bg-[color:var(--book-bg-page)] hover:opacity-90 border-2 border-[color:var(--book-interactive-accent)]'
               }`}
             >
               <input

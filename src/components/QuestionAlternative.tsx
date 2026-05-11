@@ -1,6 +1,5 @@
 import { AlternativeQuestion, UserAnswers } from '../types/questions';
 import { QuestionWrapper } from './shared/QuestionWrapper';
-import { COLORS, FONTS } from '../constants/colors';
 
 interface QuestionAlternativeProps {
   question: AlternativeQuestion;
@@ -28,7 +27,7 @@ function QuestionAlternative({
         {question.options.map((option, index) => (
           <label
             key={index}
-            className={`flex items-center gap-3 p-3 rounded cursor-pointer transition-colors ${
+            className={`book-question-alternative-option flex items-center gap-3 p-3 rounded cursor-pointer transition-colors ${
               selectedAnswer === index
                 ? 'bg-blue-100 border-l-4 border-blue-600'
                 : 'bg-white hover:bg-blue-50'
@@ -49,8 +48,14 @@ function QuestionAlternative({
               className="w-4 h-4"
               disabled={showResults}
             />
-            <span style={{ fontFamily: FONTS.primary, color: COLORS.text.primary }}>
-              <span style={{ color: COLORS.primary, fontWeight: 'bold' }}>
+            <span
+              className="book-question-alternative-text"
+              style={{
+                fontFamily: 'var(--book-font-body)',
+                color: 'var(--book-text-body, #000000)',
+              }}
+            >
+              <span style={{ color: 'var(--book-chapter-label, #00776E)', fontWeight: 'bold' }}>
                 {String.fromCharCode(97 + index)}){' '}
               </span>
               {option}

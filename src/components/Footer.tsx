@@ -10,11 +10,15 @@ function Footer() {
             alignItems: 'center',
             gap: '20px',
         }}>
-            <img src="images/conquistaLogo.png" alt="Logo" style={{ width: '110.27px', height: '62.81px' }} />
+            <img
+              src="images/conquistaLogo.png"
+              alt="Logo da coleção Conquista"
+              style={{ width: '110.27px', height: '62.81px' }}
+            />
             <p style={{
                 color: '#000',
                 textAlign: 'center',
-                fontFamily: 'Ubuntu, sans-serif',
+                fontFamily: 'var(--book-font-body)',
                 fontSize: '12px',
                 fontStyle: 'normal',
                 fontWeight: '400',

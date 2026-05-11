@@ -35,9 +35,9 @@ function QuestionTextInput({
         {/* Título principal com número */}
         <p className="mb-4">
           {question.number !== undefined && (
-            <span style={{ color: '#00776E', fontWeight: 'bold' }}>{question.number}. </span>
+            <span style={{ color: 'var(--book-text-h4)', fontWeight: 'bold' }}>{question.number}. </span>
           )}
-          <span style={{ color: 'black' }} dangerouslySetInnerHTML={{ __html: question.question }} />
+          <span style={{ color: 'var(--book-text-body)' }} dangerouslySetInnerHTML={{ __html: question.question }} />
         </p>
         
         {/* Subquestões */}
@@ -49,8 +49,8 @@ function QuestionTextInput({
             return (
               <div key={subQ.letter} className="mb-4">
                 <p className="mb-2">
-                  <span style={{ color: '#00776E', fontWeight: 'bold' }}>{subQ.letter}) </span>
-                  <span style={{ color: 'black' }}>{subQ.question}</span>
+                  <span style={{ color: 'var(--book-text-h4)', fontWeight: 'bold' }}>{subQ.letter}) </span>
+                  <span style={{ color: 'var(--book-text-body)' }}>{subQ.question}</span>
                 </p>
                 
                 {/* Subquestões aninhadas (com bullets) */}
@@ -62,7 +62,7 @@ function QuestionTextInput({
                       
                       return (
                         <li key={index} className="mb-3">
-                          <p className="mb-2" style={{ color: 'black' }}>
+                          <p className="mb-2" style={{ color: 'var(--book-text-body)' }}>
                             {subItem.label}
                           </p>
                           <textarea
@@ -70,9 +70,12 @@ function QuestionTextInput({
                             onChange={(e) => onAnswerChange(subItemId, e.target.value)}
                             placeholder={subItem.placeholder || 'Digite sua resposta aqui...'}
                             disabled={showResults}
-                            className="w-full p-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent resize-y min-h-[60px] text-black"
+                            className="w-full p-3 border rounded-lg focus:outline-none resize-y min-h-[60px]"
                             style={{
                               fontFamily: 'inherit',
+                              color: 'var(--book-text-body)',
+                              borderColor: 'var(--book-interactive-accent)',
+                              backgroundColor: 'var(--book-bg-page)',
                             }}
                           />
                           {showResults && subItem.correctAnswer && (
@@ -91,9 +94,12 @@ function QuestionTextInput({
                     onChange={(e) => onAnswerChange(subQuestionId, e.target.value)}
                     placeholder={subQ.placeholder || 'Digite sua resposta aqui...'}
                     disabled={showResults}
-                    className="w-full p-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent resize-y min-h-[80px] text-black"
+                    className="w-full p-3 border rounded-lg focus:outline-none resize-y min-h-[80px]"
                     style={{
                       fontFamily: 'inherit',
+                      color: 'var(--book-text-body)',
+                      borderColor: 'var(--book-interactive-accent)',
+                      backgroundColor: 'var(--book-bg-page)',
                     }}
                   />
                 )}
@@ -117,18 +123,21 @@ function QuestionTextInput({
     <div className="mb-6 rounded-lg">
       <p className="mb-4">
         {question.number !== undefined && (
-          <span style={{ color: '#00776E', fontWeight: 'bold' }}>{question.number}. </span>
+          <span style={{ color: 'var(--book-text-h4)', fontWeight: 'bold' }}>{question.number}. </span>
         )}
-        <span style={{ color: 'black' }} dangerouslySetInnerHTML={{ __html: question.question }} />
+        <span style={{ color: 'var(--book-text-body)' }} dangerouslySetInnerHTML={{ __html: question.question }} />
       </p>
       <textarea
         value={userAnswer}
         onChange={(e) => onAnswerChange(question.id, e.target.value)}
         placeholder={question.placeholder || 'Digite sua resposta aqui...'}
         disabled={showResults}
-        className="w-full p-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent resize-y min-h-[100px] text-black"
+        className="w-full p-3 border rounded-lg focus:outline-none resize-y min-h-[100px]"
         style={{
           fontFamily: 'inherit',
+          color: 'var(--book-text-body)',
+          borderColor: 'var(--book-interactive-accent)',
+          backgroundColor: 'var(--book-bg-page)',
         }}
       />
       {showResults && question.correctAnswer && (

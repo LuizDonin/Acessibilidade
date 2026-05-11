@@ -3,12 +3,12 @@ function MinhaVersao() {
       <div className="flex items-center gap-3 my-6">
         <img
           src="images/minhaVersao.png"
-          alt="Trilha do texto"
+          alt="Ilustração decorativa da seção Minha versão."
           className="object-contain"
         />
         <h2
           style={{
-            color: '#0E3B5D',
+            color: 'var(--book-chapter-label, #0E3B5D)',
             fontFamily: 'hwt-artz',
             fontSize: '26px',
             fontStyle: 'normal',

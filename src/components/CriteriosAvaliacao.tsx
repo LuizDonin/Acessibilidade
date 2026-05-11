@@ -33,9 +33,9 @@ function CriteriosAvaliacao({
     <div className="my-6 overflow-x-auto -mx-4 md:mx-0">
       <div className="min-w-full inline-block">
         <table
-          className="w-full border-collapse"
+          className="book-question-table w-full border-collapse"
           style={{
-            border: '3px solid #0E3B5D',
+            border: '3px solid var(--book-table-border, #0E3B5D)',
             fontFamily: 'hwt-artz, sans-serif',
             minWidth: '100%',
           }}
@@ -43,39 +43,56 @@ function CriteriosAvaliacao({
           <thead>
             <tr>
               <th
-              colSpan={2}
-                className="p-2 md:p-3 text-left"
+                colSpan={2}
+                className="align-middle p-2 md:p-3"
                 style={{
-                  border: '3px solid #0E3B5D',
-                  backgroundColor: 'white',
+                  border: '3px solid var(--book-table-border, #0E3B5D)',
+                  backgroundColor: 'var(--book-bg-page, #ffffff)',
                   textAlign: 'center',
-                }}
-              ><h3
-              className="mb-2 md:mb-4 font-bold text-sm md:text-base"
-              style={{
-                color: '#BF3154',
-              }}
-            >
-              {title}
-            </h3></th>
-              
-              <th
-                className="p-2 md:p-3 text-center"
-                style={{
-                  border: '3px solid #0E3B5D',
-                  backgroundColor: 'white',
+                  verticalAlign: 'middle',
                 }}
               >
-                <span className="text-base md:text-2xl"><img src="images/iconeFeliz.png" alt="Sim" className="w-4 h-4 md:w-14 md:h-10" /></span>
+                <h3
+                  className="m-0 font-bold text-sm md:text-base"
+                  style={{
+                    color: 'var(--book-text-h3, #BF3154)',
+                  }}
+                >
+                  {title}
+                </h3>
+              </th>
+
+              <th
+                className="align-middle p-2 md:p-3 text-center"
+                style={{
+                  border: '3px solid var(--book-table-border, #0E3B5D)',
+                  backgroundColor: 'var(--book-bg-page, #ffffff)',
+                  verticalAlign: 'middle',
+                }}
+              >
+                <span className="inline-flex items-center justify-center text-base md:text-2xl">
+                  <img
+                    src="images/iconeFeliz.png"
+                    alt="Critério atendido"
+                    className="h-4 w-4 object-contain md:h-12 md:w-12"
+                  />
+                </span>
               </th>
               <th
-                className="p-2 md:p-3 text-center"
+                className="align-middle p-2 md:p-3 text-center"
                 style={{
-                  border: '3px solid #0E3B5D',
-                  backgroundColor: 'white',
+                  border: '3px solid var(--book-table-border, #0E3B5D)',
+                  backgroundColor: 'var(--book-bg-page, #ffffff)',
+                  verticalAlign: 'middle',
                 }}
               >
-                <span className="text-base md:text-2xl"><img src="images/iconeTriste.png" alt="Não" className="w-4 h-4 md:w-14 md:h-10" /></span>
+                <span className="inline-flex items-center justify-center text-base md:text-2xl">
+                  <img
+                    src="images/iconeTriste.png"
+                    alt="Critério não atendido"
+                    className="h-4 w-4 object-contain md:h-12 md:w-12"
+                  />
+                </span>
               </th>
             </tr>
           </thead>
@@ -92,9 +109,9 @@ function CriteriosAvaliacao({
                   <td
                     className="p-2 md:p-3 font-semibold text-sm md:text-base text-center"
                     style={{
-                      border: '3px solid #0E3B5D',
-                      color: '#0E3B5D',
-                      backgroundColor: 'white',
+                      border: '3px solid var(--book-table-border, #0E3B5D)',
+                      color: 'var(--book-chapter-label, #0E3B5D)',
+                      backgroundColor: 'var(--book-bg-page, #ffffff)',
                       fontFamily: 'hwt-artz, sans-serif',
                       fontSize: '16px',
                       whiteSpace: 'normal',
@@ -107,10 +124,10 @@ function CriteriosAvaliacao({
                   <td
                     className="p-2 md:p-3 text-xs md:text-base"
                     style={{
-                      border: '3px solid #0E3B5D',
-                      color: '#0E3B5D',
-                      backgroundColor: 'white',
-                      fontFamily: 'Ubuntu, sans-serif',
+                      border: '3px solid var(--book-table-border, #0E3B5D)',
+                      color: 'var(--book-text-body, #0E3B5D)',
+                      backgroundColor: 'var(--book-bg-page, #ffffff)',
+                      fontFamily: 'var(--book-font-body)',
                       whiteSpace: 'normal',
                       wordBreak: 'break-word',
                     }}
@@ -120,8 +137,8 @@ function CriteriosAvaliacao({
                   <td
                     className="p-2 md:p-3 text-center"
                     style={{
-                      border: '3px solid #0E3B5D',
-                      backgroundColor: 'white',
+                      border: '3px solid var(--book-table-border, #0E3B5D)',
+                      backgroundColor: 'var(--book-bg-page, #ffffff)',
                     }}
                   >
                     <input
@@ -131,15 +148,15 @@ function CriteriosAvaliacao({
                       onChange={() => handleAnswerChange(criterio.id, true)}
                       className="w-3 h-3 md:w-4 md:h-4"
                       style={{
-                        accentColor: '#BF3154',
+                        accentColor: 'var(--book-interactive-accent, #BF3154)',
                       }}
                     />
                   </td>
                   <td
                     className="p-2 md:p-3 text-center"
                     style={{
-                      border: '3px solid #0E3B5D',
-                      backgroundColor: 'white',
+                      border: '3px solid var(--book-table-border, #0E3B5D)',
+                      backgroundColor: 'var(--book-bg-page, #ffffff)',
                     }}
                   >
                     <input
@@ -149,7 +166,7 @@ function CriteriosAvaliacao({
                       onChange={() => handleAnswerChange(criterio.id, false)}
                       className="w-3 h-3 md:w-4 md:h-4"
                       style={{
-                        accentColor: '#BF3154',
+                        accentColor: 'var(--book-interactive-accent, #BF3154)',
                       }}
                     />
                   </td>

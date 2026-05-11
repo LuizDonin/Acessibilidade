@@ -3,14 +3,15 @@ function TrilhaTexto() {
     <div className="flex items-center gap-3 my-6">
       <img
         src="images/trilhaTexto.png"
-        alt="Trilha do texto"
+        alt="Ilustração decorativa da seção Na trilha do texto."
         className="object-contain"
       />
       <h2
         style={{
-          color: '#0E3B5D',
+          // Alinha com as cores do Modo 1 (azul claro) via tema.
+          color: 'var(--book-chapter-label, #0E3B5D)',
           fontFamily: 'hwt-artz',
-          fontSize: '26px',
+          fontSize: 'var(--book-h3-size, 26px)',
           fontStyle: 'normal',
           fontWeight: 700,
           lineHeight: 'normal',

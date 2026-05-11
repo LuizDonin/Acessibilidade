@@ -1,5 +1,6 @@
 import jsPDF from 'jspdf';
 import { Question, UserAnswers } from '../types/questions';
+import type { ContrastMode } from '../types/accessibility';
 import DownloadButton from './DownloadButton';
 
 interface DownloadQuestionsButtonProps {
@@ -7,6 +8,7 @@ interface DownloadQuestionsButtonProps {
   userAnswers: UserAnswers;
   title?: string;
   fileName?: string;
+  contrastMode?: ContrastMode;
 }
 
 function DownloadQuestionsButton({
@@ -14,6 +16,7 @@ function DownloadQuestionsButton({
   userAnswers,
   title = 'Questões',
   fileName = 'questoes.pdf',
+  contrastMode = 'default',
 }: DownloadQuestionsButtonProps) {
   // Função auxiliar para remover tags HTML
   const stripHtml = (html: string): string => {
@@ -379,7 +382,7 @@ function DownloadQuestionsButton({
     doc.save(fileName);
   };
 
-  return <DownloadButton onClick={handleDownload} />;
+  return <DownloadButton onClick={handleDownload} contrastMode={contrastMode} />;
 }
 
 export default DownloadQuestionsButton;

@@ -4,7 +4,7 @@
 
 
 @font-face {
-  font-family: 'hwt-artz", sans-serif';
+  font-family: 'hwt-artz', sans-serif;
   src: url('/fonts/HWT-Artz.woff2') format('woff2'),
     url('/fonts/HWT-Artz.woff') format('woff'),
     url('/fonts/HWT-Artz.ttf') format('truetype');
@@ -13,19 +13,45 @@
   font-display: swap;
 }
 
+.book-reading-root {
+  background-color: var(--book-bg-outer, #e5e7eb);
+}
+
+.book-reading-column {
+  background-color: var(--book-bg-page, #ffffff);
+  font-family: var(--book-font-body, 'Ubuntu', sans-serif);
+}
+
+.chapter-heading-block {
+  border-left-color: var(--book-chapter-border, #00a99d);
+}
+
+.chapter-label {
+  color: var(--book-chapter-label, #0e3b5d);
+}
+
+.chapter-title-h2 {
+  color: var(--book-chapter-title, #1e293b);
+  font-size: var(--book-h2-size, 36px);
+}
+
+.chapter-content {
+  color: var(--book-text-body, #000000);
+}
+
 .chapter-content h3 {
-  color: #BF3154;
-  font-family: 'hwt-artz', sans-serif;
-  font-size: 26px;
+  color: var(--book-text-h3, #bf3154);
+  font-family: var(--book-font-heading, 'hwt-artz', sans-serif);
+  font-size: var(--book-h3-size, 26px);
   font-style: normal;
   font-weight: 700;
   line-height: normal;
 }
 
 .chapter-content h4 {
-  color: #00776E;
-  font-family: 'hwt-artz', sans-serif;
-  font-size: 20px;
+  color: var(--book-text-h4, #00776e);
+  font-family: var(--book-font-heading, 'hwt-artz', sans-serif);
+  font-size: var(--book-h4-size, 20px);
   font-style: normal;
   font-weight: 700;
   line-height: normal;
@@ -35,20 +61,153 @@
 .chapter-content p,
 .chapter-content li,
 .texto-corrido p {
-  color: black;
-  font-family: 'Ubuntu', 'sans-serif';
-  font-size: 16px;
+  color: var(--book-text-body, #000000);
+  font-family: var(--book-font-body, 'Ubuntu', sans-serif);
+  font-size: var(--book-body-size, 16px);
   font-style: normal;
-  font-weight: 400;
-  line-height: 150%;
+  font-weight: var(--book-body-weight, 400);
+  line-height: var(--book-line-height, 1.5);
+}
+
+/* Remove grifos amarelos hardcoded quando um modo de acessibilidade/contraste estiver ativo. */
+.book-reading-root:not([data-a11y-contrast-mode='default']) .book-inline-highlight {
+  background-color: transparent !important;
+  padding-left: 0;
+  padding-right: 0;
+}
+
+/* Modo 1: destaque = sublinhado na cor do texto (sem fundo amarelo) */
+.book-reading-root[data-a11y-contrast-mode='1'] .book-inline-highlight {
+  text-decoration: underline;
+  text-decoration-color: currentColor;
+  text-underline-offset: 0.2em;
+  text-decoration-thickness: 2px;
+}
+
+/* Questões de alternativa: em modos de acessibilidade, evita fundo branco e mantém texto legível. */
+.book-reading-root:not([data-a11y-contrast-mode='default'])
+  .book-question-alternative-option {
+  background-color: transparent !important;
+  color: var(--book-text-body, #ffffff);
+}
+
+.book-reading-root:not([data-a11y-contrast-mode='default'])
+  .book-question-alternative-option:hover {
+  background-color: transparent !important;
 }
 
 /* Estilo para bullets coloridos nas subquestões */
 ul.question-subitems li::marker {
-  color: #BF3154;
+  color: var(--book-question-marker, #bf3154);
 }
 
 /* Remove text-justify de todas as células de tabela */
 td {
   text-align: left;
+}
+
+/* Botão "Para o professor" — Modo 1 (acessibilidade) */
+.book-reading-column button.professor-button--a11y-modo1:focus-visible {
+  outline: 2px solid var(--book-focus-ring);
+  outline-offset: 3px;
+}
+
+/* Modal "Para o professor" — Modo 1: corpo e elementos comuns */
+.teacher-modal-modo1 .teacher-modal-body a {
+  color: var(--book-interactive-accent);
+  text-decoration: underline;
+  text-underline-offset: 2px;
+}
+
+.teacher-modal-modo1 .teacher-modal-body strong {
+  color: var(--book-text-body);
+  font-weight: 700;
+}
+
+.teacher-modal-modo1 .teacher-modal-body em {
+  color: var(--book-text-body);
+}
+
+/* Foco visível no miolo (Modo 1: --book-focus-ring) */
+.book-reading-column a:focus-visible,
+.book-reading-column :is(input, textarea, select):focus-visible,
+.book-reading-column button:focus-visible {
+  outline: 2px solid var(--book-focus-ring, #2563eb);
+  outline-offset: 2px;
+  --tw-ring-shadow: 0 0 #0000;
+  --tw-ring-offset-shadow: 0 0 #0000;
+  box-shadow: none;
+}
+
+/*
+ * Modo 1 — campos de texto: sem anel azul; destaque de foco = contorno laranja por fora da caixa
+ * (outline não altera o box interno, evitando “pular” o texto ao focar).
+ */
+.book-reading-root[data-a11y-contrast-mode='1']
+  .book-reading-column
+  :is(input, textarea, select):not([type='checkbox']):not([type='radio']):focus,
+.book-reading-root[data-a11y-contrast-mode='1']
+  .book-reading-column
+  :is(input, textarea, select):not([type='checkbox']):not([type='radio']):focus-visible {
+  outline: 3px solid var(--book-interactive-accent) !important;
+  outline-offset: 0px;
+  box-shadow: none !important;
+  --tw-ring-shadow: 0 0 #0000 !important;
+  --tw-ring-offset-shadow: 0 0 #0000 !important;
+}
+
+.book-reading-column
+  :is(input, textarea, select):not([type='checkbox']):not([type='radio']) {
+  border-color: var(--book-interactive-accent, #d1d5db);
+  color: var(--book-text-body, #000000);
+  background-color: var(--book-bg-page, #ffffff);
+}
+
+/* Tabela de dados (capítulo) */
+.book-data-table {
+  border-collapse: collapse;
+  background-color: var(--book-table-cell-bg, #ffffff);
+}
+.book-data-table thead tr {
+  background-color: var(--book-table-head-bg, #334155);
+  color: var(--book-table-head-text, #ffffff);
+}
+.book-data-table tbody td {
+  color: var(--book-text-body, #1e293b);
+  border-bottom: 1px solid var(--book-table-border, #e2e8f0);
+}
+
+/* Sumário */
+.book-toc-nav {
+  background-color: var(--book-toc-bg, #eee6d4);
+  border-color: var(--book-toc-border, #e2e8f0);
+}
+.book-toc-nav h2 {
+  color: var(--book-toc-heading, #0e3b5d);
+}
+.book-toc-nav .book-toc-link {
+  color: var(--book-toc-link, #144468);
+}
+
+/* QR do sumário no Modo 1: mesma cor de destaque dos botões (--book-interactive-accent) */
+.book-toc-qr-modo1 {
+  display: inline-block;
+  background-color: var(--book-interactive-accent, #ffc296);
+  -webkit-mask-image: url(/images/qrCode.svg);
+  -webkit-mask-repeat: no-repeat;
+  -webkit-mask-position: center;
+  -webkit-mask-size: contain;
+  mask-image: url(/images/qrCode.svg);
+  mask-repeat: no-repeat;
+  mask-position: center;
+  mask-size: contain;
+}
+
+/* Tabelas de questões (bordas = --book-table-border) */
+.book-reading-column .book-question-table {
+  border-color: var(--book-table-border, #0e3b5d);
+}
+.book-reading-column .book-question-table th,
+.book-reading-column .book-question-table td {
+  border-color: var(--book-table-border, #0e3b5d);
 }

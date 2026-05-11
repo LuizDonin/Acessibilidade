@@ -21,7 +21,11 @@ import Footer from './Footer';
 import { useUserAnswers } from '../hooks/useUserAnswers';
 import { usePagination } from '../hooks/usePagination';
 import { useScrollPosition } from '../hooks/useScrollPosition';
+import { useAccessibilityPreferences } from '../hooks/useAccessibilityPreferences';
 import { TeacherAnswers } from './TeacherAnswers';
+import { AccessibilitySidebar } from './accessibility/AccessibilitySidebar';
+import { ReadingRuler } from './accessibility/ReadingRuler';
+import { ReadingFocus } from './accessibility/ReadingFocus';
 
 // Controle de visibilidade do botão do professor
 // Altere para false para ocultar todos os botões "Para o Professor"
@@ -31,27 +35,57 @@ function Book() {
   const { userAnswers, handleAnswerChange } = useUserAnswers();
   const { currentPage, scrollToTop } = usePagination();
   const [showTeacherView, setShowTeacherView] = useState(false);
+  const {
+    prefs,
+    bookStyle,
+    setContrastMode,
+    bumpFontScale,
+    toggleBoldBody,
+    cycleBodyFont,
+    resetToDefaults,
+    updatePrefs,
+  } = useAccessibilityPreferences();
+  const isModo1 = prefs.contrastMode === 1;
 
   // Restaura a posição de scroll salva
   useScrollPosition();
 
   return (
-    <div className="min-h-screen bg-gray-200 w-full">
-      <div className="mx-auto bg-white shadow-2xl overflow-hidden w-full md:max-w-[63%]" style={{ marginLeft: 'auto', marginRight: 'auto' }}>
+    <div
+      className="book-reading-root min-h-screen w-full"
+      style={bookStyle}
+      data-a11y-contrast-mode={String(prefs.contrastMode)}
+    >
+      <AccessibilitySidebar
+        prefs={prefs}
+        updatePrefs={updatePrefs}
+        setContrastMode={setContrastMode}
+        bumpFontScale={bumpFontScale}
+        toggleBoldBody={toggleBoldBody}
+        cycleBodyFont={cycleBodyFont}
+        resetToDefaults={resetToDefaults}
+      />
+      <ReadingRuler enabled={prefs.rulerEnabled} />
+      <ReadingFocus enabled={prefs.readingFocusEnabled} />
+      <div
+        className="book-reading-column mx-auto shadow-2xl overflow-hidden w-full md:max-w-[63%]"
+        style={{ marginLeft: 'auto', marginRight: 'auto' }}
+      >
         <Header />
 
         <div className="p-8 md:p-12">
           {/* Conteúdo do sumário */}
-          <TableOfContents />
+          <TableOfContents contrastMode={prefs.contrastMode} />
           {/* Paginação */}
           <Pagination currentPage={currentPage} />
           {/* Conteúdo do botão do professor */}
           <div className="my-6">
             <TeacherButton
+              contrastMode={prefs.contrastMode}
               visible={SHOW_TEACHER_BUTTON}
               content={
                 <>
-                  <p className="mb-3" style={{ fontFamily: 'Ubuntu, sans-serif', color: '#000000', fontSize: '16px' }}>
+                  <p className="mb-3" style={{ fontFamily: 'var(--book-font-body)', color: 'var(--book-text-body)', fontSize: '16px' }}>
                     EF06LP01, EF06LP02. A proposta de abertura tem o objetivo de mobilizar o repertório dos alunos sobre o gênero textual notícia, conectando o conteúdo a experiências de vida e a temas atuais ligados à tecnologia. Incentive-os a comentar, complementar ou questionar as histórias, sempre com respeito e sob sua mediação. As perguntas propostas visam provocar uma reflexão sobre o que torna um fato noticiável, destacando que a definição do que vira notícia é também uma escolha ética e cultural.
                   </p>
                 </>
@@ -83,7 +117,7 @@ function Book() {
                   exemplos de como alguns acontecimentos chamam a atenção de jornais, sites e telejornais.
                 </p>
                 {/* Conteúdo de lista */}
-                <ul className="list-disc marker:text-[#BF3154] ml-6">
+                <ul className="list-disc marker:text-[color:var(--book-question-marker)] ml-6">
                   <li>Por que algumas histórias viram notícia e outras não?</li>
                   <li>O que torna um fato interessante ou importante para ser compartilhado
                     com milhares de pessoas?</li>
@@ -92,6 +126,7 @@ function Book() {
                 <div className="flex flex-col items-center my-6">
                   <img
                     src="images/noticias.png"
+                    alt="Ilustração sobre notícias e jornais, relacionada ao capítulo sobre o gênero textual notícia."
                     className="w-full max-w-[320px] sm:max-w-[380px] md:max-w-[480px] lg:max-w-[520px] h-auto"
                   />
                   <p className="text-[10px] text-slate-600 mt-2" style={{ fontSize: '10px' }}>SachiDesigns, Mykola Syvak/stock.adobe.com
@@ -100,6 +135,7 @@ function Book() {
                 <Pagination currentPage={5} />
                 <div className="my-6">
                   <TeacherButton
+              contrastMode={prefs.contrastMode}
                     visible={SHOW_TEACHER_BUTTON}
                     content={
                       <>
@@ -135,7 +171,7 @@ function Book() {
                 <p className="mb-4 indent-6">
                   As principais características da notícia estão listadas a seguir.
                 </p>
-                <ul className="list-disc marker:text-[#BF3154] ml-6">
+                <ul className="list-disc marker:text-[color:var(--book-question-marker)] ml-6">
                   <li><strong>Foco na objetividade</strong>: o autor não deve expressar sua opinião. </li>
                   <li><strong>Uso da terceira pessoa</strong>: evita-se o uso de pronomes como <strong>eu</strong> ou <strong>nós</strong>. </li>
                   <li><strong>Presença de lide</strong>: as informações mais importantes aparecem no início do texto. </li>
@@ -159,6 +195,7 @@ function Book() {
                 <Pagination currentPage={6} />
                 <div className="my-6">
                   <TeacherButton
+              contrastMode={prefs.contrastMode}
                     visible={SHOW_TEACHER_BUTTON}
                     content={
                       <>
@@ -211,8 +248,8 @@ function Book() {
                     10/08/2025
                   </p>
                   <p className="mb-4 indent-6">
-                    Se você está em busca de um <span className="bg-[#fff225] px-1">robô humanoide</span> para chamar de seu, a China pode ser o lugar
-                    ideal para sua compra. Na última sexta-feira (8), Pequim abriu as portas do <span className="bg-[#fff225] px-1">Robot Mall</span>, considerado a primeira loja de robôs inteligentes humanoides 4S do mundo.
+                    Se você está em busca de um <span className="book-inline-highlight bg-[#fff225] px-1">robô humanoide</span> para chamar de seu, a China pode ser o lugar
+                    ideal para sua compra. Na última sexta-feira (8), Pequim abriu as portas do <span className="book-inline-highlight bg-[#fff225] px-1">Robot Mall</span>, considerado a primeira loja de robôs inteligentes humanoides 4S do mundo.
                   </p>
                   <p className="mb-4 indent-6">
                     O modelo “4S” significa que eles oferecem vendas, peças de reposição, manutenção e pesquisas —
@@ -222,7 +259,7 @@ function Book() {
                     Segundo Wang Yifan, diretor do Robot Mall, a instalação de quatro andares é a primeira loja
                     desse tipo na China, embora outras cidades também estejam construindo modelos como esse,
                     informou a  agência de notícias AP. O Robot Mall tem mais de 100 tipos de robôs de mais de
-                    40 marcas chinesas, como a Ubtech Robotics e a Unitree Robotics, de acordo com a <span className="bg-[#fff225] px-1">Reuters</span>.
+                    40 marcas chinesas, como a Ubtech Robotics e a Unitree Robotics, de acordo com a <span className="book-inline-highlight bg-[#fff225] px-1">Reuters</span>.
                   </p>
                   <p className="mb-4 indent-6">
                     “Se os robôs vão entrar em milhares de lares, depender apenas
@@ -236,10 +273,17 @@ function Book() {
                   </p>
                   {/* Imagem */}
                   <div className="flex flex-col items-center my-6">
-                    <img src="images/roboHumanoide.png" className="max-w-[50%]" />
+                    <img
+                      src="images/roboHumanoide.png"
+                      alt="Fotografia de robô humanoide em ambiente de laboratório ou exposição."
+                      className="max-w-[50%]"
+                    />
                     <p className="text-[10px] text-slate-600 mt-2" style={{ fontSize: '10px' }}>ADEK BERRY/AFP
                     </p>
-                    <div className="border-l-[2px] border-[#00B99D] pl-2 mb-1">
+                    <div
+                      className="border-l-[2px] pl-2 mb-1"
+                      style={{ borderLeftColor: 'var(--book-chapter-border)' }}
+                    >
                       <p className="text-[10px]" style={{ fontSize: '10px' }}>Robô humanoide parecido com
                         Albert Einstein no Robot Mall.
                       </p>
@@ -257,7 +301,14 @@ function Book() {
                     tem sido, em grande parte, um esforço focado em pesquisa.
                   </p>
                   {/* Glossário */}
-                  <div className="mb-6 p-4 bg-blue-50 rounded-lg border border-blue-200">
+                  <div
+                    className="mb-6 p-4 rounded-lg border"
+                    style={{
+                      backgroundColor: isModo1 ? '#2a3b4f' : '#eff6ff',
+                      borderColor: isModo1 ? 'var(--book-table-border, #9fe2ef)' : '#bfdbfe',
+                      color: isModo1 ? '#ffffff' : 'inherit',
+                    }}
+                  >
                     <p className="text-[13px] mb-4 indent-6"><strong>robô humanoide</strong>: robô que tem forma
                       ou movimentos parecidos com os de
                       uma pessoa.
@@ -272,8 +323,8 @@ function Book() {
                 <p
                   className="mt-2 mb-6"
                   style={{
-                    fontFamily: 'Ubuntu, sans-serif',
-                    color: '#000000',
+                    fontFamily: 'var(--book-font-body)',
+                    color: 'var(--book-text-body)',
                     fontSize: '10px',
                   }}
                 >
@@ -283,6 +334,7 @@ function Book() {
                 {/* Conteúdo do botão do professor */}
                 <div className="my-6">
                   <TeacherButton
+              contrastMode={prefs.contrastMode}
                     visible={SHOW_TEACHER_BUTTON}
                     content={
                       <TeacherAnswers
@@ -327,12 +379,14 @@ function Book() {
                     userAnswers={userAnswers}
                     title="Questões da Página 7"
                     fileName="questoes-pagina-7.pdf"
+                    contrastMode={prefs.contrastMode}
                   />
                 </div>
                 <Pagination currentPage={8} />
                 {/* Conteúdo do botão do professor */}
                 <div className="my-6">
                   <TeacherButton
+              contrastMode={prefs.contrastMode}
                     visible={SHOW_TEACHER_BUTTON}
                     content={
                       <>
@@ -366,6 +420,7 @@ function Book() {
                     userAnswers={userAnswers}
                     title="Questões da Página 8"
                     fileName="questoes-pagina-8.pdf"
+                    contrastMode={prefs.contrastMode}
                   />
                 </div>
                 <TrilhaTexto />
@@ -419,6 +474,7 @@ function Book() {
                 {/* Conteúdo do botão do professor */}
                 <div className="my-6">
                   <TeacherButton
+              contrastMode={prefs.contrastMode}
                     visible={SHOW_TEACHER_BUTTON}
                     content={
                       <>
@@ -438,9 +494,9 @@ function Book() {
                               return (
                                 <p key={stmt.letter} className="mb-3">
                                   {question.number !== undefined && (
-                                    <span style={{ color: '#00776E', fontWeight: 'bold' }}>{question.number}. </span>
+                                    <span style={{ color: 'var(--book-text-h4)', fontWeight: 'bold' }}>{question.number}. </span>
                                   )}
-                                  <span style={{ color: '#00776E', fontWeight: 'bold' }}>{stmt.letter}) </span>
+                                  <span style={{ color: 'var(--book-text-h4)', fontWeight: 'bold' }}>{stmt.letter}) </span>
                                   <span dangerouslySetInnerHTML={{ __html: answerText }} />
                                 </p>
                               );
@@ -454,9 +510,9 @@ function Book() {
                             return question.subQuestions.map((subQ) => (
                               <p key={subQ.letter} className="mb-3">
                                 {question.number !== undefined && (
-                                  <span style={{ color: '#00776E', fontWeight: 'bold' }}>{question.number}. </span>
+                                  <span style={{ color: 'var(--book-text-h4)', fontWeight: 'bold' }}>{question.number}. </span>
                                 )}
-                                <span style={{ color: '#00776E', fontWeight: 'bold' }}>{subQ.letter}) </span>
+                                <span style={{ color: 'var(--book-text-h4)', fontWeight: 'bold' }}>{subQ.letter}) </span>
                                 <span dangerouslySetInnerHTML={{ __html: subQ.correctAnswer || '' }} />
                               </p>
                             ));
@@ -493,8 +549,8 @@ function Book() {
                 <p
                   className="mt-2 mb-6"
                   style={{
-                    fontFamily: 'Ubuntu, sans-serif',
-                    color: '#000000',
+                    fontFamily: 'var(--book-font-body)',
+                    color: 'var(--book-text-body)',
                     fontSize: '10px',
                   }}
                 >
@@ -521,12 +577,14 @@ function Book() {
                     userAnswers={userAnswers}
                     title="Questões da Página 9"
                     fileName="questoes-pagina-9.pdf"
+                    contrastMode={prefs.contrastMode}
                   />
                 </div>
                 <Pagination currentPage={10} />
                 {/* Conteúdo do botão do professor - Tabela comparativa */}
                 <div className="my-6">
                   <TeacherButton
+              contrastMode={prefs.contrastMode}
                     visible={SHOW_TEACHER_BUTTON}
                     content={
                       <>
@@ -543,7 +601,7 @@ function Book() {
                                   <>
                                     <p className="mb-2 font-semibold">
                                       {question.number !== undefined && (
-                                        <span style={{ color: '#00776E', fontWeight: 'bold' }}>{question.number}. </span>
+                                        <span style={{ color: 'var(--book-text-h4)', fontWeight: 'bold' }}>{question.number}. </span>
                                       )}
                                       Tabela:
                                     </p>
@@ -564,7 +622,7 @@ function Book() {
 
                                       return (
                                         <div key={row.id} className="mb-4">
-                                          <p className="mb-2 font-semibold" style={{ color: '#0E3B5D' }}>
+                                          <p className="mb-2 font-semibold" style={{ color: 'var(--book-chapter-label)' }}>
                                             {question.columns[0]} {firstColumnValue}:
                                           </p>
                                           {columnAnswers.map((colAnswer, idx) => (
@@ -583,7 +641,7 @@ function Book() {
                                     <p className="mb-2 mt-4 font-semibold">Subquestões:</p>
                                     {question.subQuestions.map((subQ) => (
                                       <p key={subQ.letter} className="mb-3">
-                                        <span style={{ color: '#00776E', fontWeight: 'bold' }}>{subQ.letter}) </span>
+                                        <span style={{ color: 'var(--book-text-h4)', fontWeight: 'bold' }}>{subQ.letter}) </span>
                                         <span dangerouslySetInnerHTML={{ __html: subQ.correctAnswer || '' }} />
                                       </p>
                                     ))}
@@ -602,9 +660,9 @@ function Book() {
                               return question.subQuestions.map((subQ) => (
                                 <p key={subQ.letter} className="mb-3">
                                   {question.number !== undefined && (
-                                    <span style={{ color: '#00776E', fontWeight: 'bold' }}>{question.number}. </span>
+                                    <span style={{ color: 'var(--book-text-h4)', fontWeight: 'bold' }}>{question.number}. </span>
                                   )}
-                                  <span style={{ color: '#00776E', fontWeight: 'bold' }}>{subQ.letter}) </span>
+                                  <span style={{ color: 'var(--book-text-h4)', fontWeight: 'bold' }}>{subQ.letter}) </span>
                                   <span dangerouslySetInnerHTML={{ __html: subQ.correctAnswer || '' }} />
                                 </p>
                               ));
@@ -614,7 +672,7 @@ function Book() {
                               return (
                                 <p className="mb-3">
                                   {question.number !== undefined && (
-                                    <span style={{ color: '#00776E', fontWeight: 'bold' }}>{question.number}. </span>
+                                    <span style={{ color: 'var(--book-text-h4)', fontWeight: 'bold' }}>{question.number}. </span>
                                   )}
                                   <span dangerouslySetInnerHTML={{ __html: question.correctAnswer }} />
                                 </p>
@@ -648,12 +706,14 @@ function Book() {
                     userAnswers={userAnswers}
                     title="Questões da Página 10"
                     fileName="questoes-pagina-10.pdf"
+                    contrastMode={prefs.contrastMode}
                   />
                 </div>
                 <Pagination currentPage={11} />
                 {/* Conteúdo do botão do professor */}
                 <div className="my-6">
                   <TeacherButton
+              contrastMode={prefs.contrastMode}
                     visible={SHOW_TEACHER_BUTTON}
                     content={
                       <>
@@ -675,7 +735,7 @@ function Book() {
                 <p className="mb-4 indent-6"><strong>Preparação</strong></p>
                 <p className="mb-4 indent-6">Sua notícia deve conter os elementos listados a seguir.
                 </p>
-                <ul className="list-disc marker:text-[#BF3154] ml-6">
+                <ul className="list-disc marker:text-[color:var(--book-question-marker)] ml-6">
                   <li><strong>Título </strong>: chamativo e informativo, que antecipe o assunto e indique o enfoque escolhido
                     para o texto.  </li>
                   <li><strong>Linha-fina </strong>: complementar ao título, com um dado ou uma ideia que aprofunde o tema.  </li>
@@ -731,11 +791,12 @@ function Book() {
                   onAnswerChange={handleAnswerChange}
                 />
                 <Pagination currentPage={12} />
-                <ProducaoTexto instanceId="producaoTexto1" />
+                <ProducaoTexto instanceId="producaoTexto1" contrastMode={prefs.contrastMode} />
                 <Pagination currentPage={13} />
                 {/* Conteúdo do botão do professor */}
                 <div className="my-6">
                   <TeacherButton
+              contrastMode={prefs.contrastMode}
                     visible={SHOW_TEACHER_BUTTON}
                     content={
                       <>
@@ -757,7 +818,7 @@ function Book() {
                 </p>
                 <p className="mb-4 indent-6">Mas, quando a notícia é adaptada para outras mídias, como a televisão, o rádio ou os <em>podcasts</em>, alguns elementos mudam.
                 </p>
-                <ul className="list-disc marker:text-[#BF3154] ml-6">
+                <ul className="list-disc marker:text-[color:var(--book-question-marker)] ml-6">
                   <li>O título e o lide são falados por quem apresenta a notícia.  </li>
                   <li>O tom oral e o ritmo das frases marcam a narração, com pausas naturais e repetições.  </li>
                   <li>O corpo da notícia e seu desfecho são frequentemente desenvolvidos de forma multimodal, incorporando recursos linguísticos expressivos, como emoção, jogos de palavras e comentários de efeito, característicos desse tipo de cobertura, e elementos visuais e audiovisuais, como imagens, vídeos do ocorrido ou do local dos fatos, gráficos, infográficos, ilustrações, entre outros.
@@ -777,8 +838,8 @@ function Book() {
                 <p
                   className="mt-2 mb-6"
                   style={{
-                    fontFamily: 'Ubuntu, sans-serif',
-                    color: '#000000',
+                    fontFamily: 'var(--book-font-body)',
+                    color: 'var(--book-text-body)',
                     fontSize: '10px',
                   }}
                 >
@@ -793,8 +854,8 @@ function Book() {
                 <p
                   className="mt-2 mb-6"
                   style={{
-                    fontFamily: 'Ubuntu, sans-serif',
-                    color: '#000000',
+                    fontFamily: 'var(--book-font-body)',
+                    color: 'var(--book-text-body)',
                     fontSize: '10px',
                   }}
                 >
@@ -805,6 +866,7 @@ function Book() {
                 {/* Conteúdo do botão do professor - Tabela comparativa */}
                 <div className="my-6">
                   <TeacherButton
+              contrastMode={prefs.contrastMode}
                     visible={SHOW_TEACHER_BUTTON}
                     content={
                       <>
@@ -817,9 +879,9 @@ function Book() {
                             return question.subQuestions.map((subQ) => (
                               <p key={subQ.letter} className="mb-3">
                                 {question.number !== undefined && (
-                                  <span style={{ color: '#00776E', fontWeight: 'bold' }}>{question.number}. </span>
+                                  <span style={{ color: 'var(--book-text-h4)', fontWeight: 'bold' }}>{question.number}. </span>
                                 )}
-                                <span style={{ color: '#00776E', fontWeight: 'bold' }}>{subQ.letter}) </span>
+                                <span style={{ color: 'var(--book-text-h4)', fontWeight: 'bold' }}>{subQ.letter}) </span>
                                 <span dangerouslySetInnerHTML={{ __html: subQ.correctAnswer || '' }} />
                               </p>
                             ));
@@ -832,9 +894,9 @@ function Book() {
                             return question.subQuestions.map((subQ) => (
                               <p key={subQ.letter} className="mb-3">
                                 {question.number !== undefined && (
-                                  <span style={{ color: '#00776E', fontWeight: 'bold' }}>{question.number}. </span>
+                                  <span style={{ color: 'var(--book-text-h4)', fontWeight: 'bold' }}>{question.number}. </span>
                                 )}
-                                <span style={{ color: '#00776E', fontWeight: 'bold' }}>{subQ.letter}) </span>
+                                <span style={{ color: 'var(--book-text-h4)', fontWeight: 'bold' }}>{subQ.letter}) </span>
                                 <span dangerouslySetInnerHTML={{ __html: subQ.correctAnswer || '' }} />
                               </p>
                             ));
@@ -851,7 +913,7 @@ function Book() {
                                   <>
                                     <p className="mb-2 font-semibold">
                                       {question.number !== undefined && (
-                                        <span style={{ color: '#00776E', fontWeight: 'bold' }}>{question.number}. </span>
+                                        <span style={{ color: 'var(--book-text-h4)', fontWeight: 'bold' }}>{question.number}. </span>
                                       )}
                                       Tabela:
                                     </p>
@@ -872,7 +934,7 @@ function Book() {
 
                                       return (
                                         <div key={row.id} className="mb-4">
-                                          <p className="mb-2 font-semibold" style={{ color: '#0E3B5D' }}>
+                                          <p className="mb-2 font-semibold" style={{ color: 'var(--book-chapter-label)' }}>
                                             {question.columns[0]} {firstColumnValue}:
                                           </p>
                                           {columnAnswers.map((colAnswer, idx) => (
@@ -922,12 +984,14 @@ function Book() {
                     userAnswers={userAnswers}
                     title="Questões da Página 14"
                     fileName="questoes-pagina-14.pdf"
+                    contrastMode={prefs.contrastMode}
                   />
                 </div>
                 <Pagination currentPage={15} />
                 {/* Conteúdo do botão do professor */}
                 <div className="my-6">
                   <TeacherButton
+              contrastMode={prefs.contrastMode}
                     visible={SHOW_TEACHER_BUTTON}
                     content={
                       <>
@@ -943,7 +1007,7 @@ function Book() {
                   Agora, é hora de mostrar tudo o que você aprendeu! Você vai escrever uma notícia completa com base nos textos III e IV, que foram veiculados como notícias oralizadas em telejornais. Sua tarefa será transformar essas versões em uma notícia escrita, pensada para ser publicada em um jornal impresso ou em um <em>site</em> de notícias.
                 </p>
                 <p className="mb-4 indent-6"><strong>Preparação</strong></p>
-                <ol className="list-decimal marker:text-[#BF3154] ml-6 mb-4">
+                <ol className="list-decimal marker:text-[color:var(--book-question-marker)] ml-6 mb-4">
                   <li>Antes de começar a escrever sua notícia, aprofunde-se mais no tema. Faça uma pesquisa na internet sobre as Olimpíadas de Robôs e descubra as informações principais sobre o evento: Como e quando surgiu? Onde foi realizado? Quem participou? Quais modalidades foram disputadas? </li>
                   <li>Em seguida, pense nas decisões que você vai tomar como autor. Qual será o foco da sua notícia: o impacto do evento, os melhores resultados nas competições, os incentivos financeiros do governo ou outro aspecto? Qual será o tom do seu texto: mais técnico e informativo ou mais leve e descritivo?   </li>
                 </ol>
@@ -999,7 +1063,7 @@ function Book() {
                   onAnswerChange={handleAnswerChange}
                 />
                 <Pagination currentPage={16} />
-                <ProducaoTextoNoticia />
+                <ProducaoTextoNoticia contrastMode={prefs.contrastMode} />
               </>
             }
           />
@@ -1007,6 +1071,7 @@ function Book() {
           {/* Conteúdo do botão do professor */}
           <div className="my-6">
             <TeacherButton
+              contrastMode={prefs.contrastMode}
               visible={SHOW_TEACHER_BUTTON}
               content={
                 <>
@@ -1038,20 +1103,25 @@ function Book() {
                   Porém, a moral não precisa ser aceita como verdade absoluta. É possível refletir sobre ela de diferentes maneiras. Dessa forma, as fábulas deixam de ser apenas histórias com lições prontas e passam a ser um convite à crítica, à reflexão e ao diálogo.
                 </p>
                 {/* Conteúdo de lista */}
-                <ul className="list-disc marker:text-[#BF3154] ml-6">
+                <ul className="list-disc marker:text-[color:var(--book-question-marker)] ml-6">
                   <li>Todas as histórias precisam terminar com uma lição explícita?</li>
                   <li>O que torna uma atitude boa ou ruim? Isso depende da intenção?</li>
                   <li>Todos os comportamentos têm consequências? Por quê?</li>
                 </ul>
                 {/* Imagem */}
                 <div className="flex flex-col items-center my-6">
-                  <img src="images/lobo.png" className='max-w-[50%]' />
+                  <img
+                    src="images/lobo.png"
+                    alt="Ilustração de um lobo."
+                    className="max-w-[50%]"
+                  />
                   <p className="text-[10px] text-slate-600 mt-2" style={{ fontSize: '10px' }}>Hennadii H/Shutterstock
                   </p>
                 </div>
                 <Pagination currentPage={18} />
                 <div className="my-6">
                   <TeacherButton
+              contrastMode={prefs.contrastMode}
                     visible={SHOW_TEACHER_BUTTON}
                     content={
                       <>
@@ -1084,7 +1154,7 @@ function Book() {
                 <p className="mb-4 indent-6">
                   Como são textos curtos, as fábulas exigem uma construção narrativa intencional. O tempo é marcado sem descrições longas, a linguagem é direta e carregada de intenção e os desfechos são rápidos e, muitas vezes, surpreendentes. O autor precisa selecionar com cuidado cada elemento da narrativa para transmitir uma mensagem em poucos parágrafos. Normalmente, as fábulas se organizam em três partes principais.
                 </p>
-                <ul className="list-disc marker:text-[#BF3154] ml-6">
+                <ul className="list-disc marker:text-[color:var(--book-question-marker)] ml-6">
                   <li><strong>Situação inicial</strong>:  apresenta o cenário e os personagens, sugerindo o comportamento de cada um. </li>
                   <li><strong>Conflito</strong>: contém um desafio, uma escolha ou uma situação crítica que leva os personagens a agir. </li>
                   <li><strong>Desfecho</strong>: mostra a consequência direta das ações dos personagens, geralmente com uma surpresa ou inversão de expectativa. </li>
@@ -1096,6 +1166,7 @@ function Book() {
                 <Pagination currentPage={19} />
                 <div className="my-6">
                   <TeacherButton
+              contrastMode={prefs.contrastMode}
                     visible={SHOW_TEACHER_BUTTON}
                     content={
                       <>
@@ -1145,7 +1216,11 @@ function Book() {
 
                   {/* Imagem */}
                   <div className="flex flex-col items-center my-6">
-                    <img src="images/lebreTartaruga.png" className="max-w-[50%]" />
+                    <img
+                      src="images/lebreTartaruga.png"
+                      alt="Ilustração da fábula da lebre e da tartaruga."
+                      className="max-w-[50%]"
+                    />
                     <p className="text-[10px] text-slate-600 mt-2" style={{ fontSize: '10px' }}>WINTER, Milo. A lebre e a tartaruga. <em>In: AESOP. The Aesop for children. [S.l.]</em>: Project Gutenberg, 2006. Disponível em: <a href="http://www.gutenberg.org/etext/19994" target="_blank" rel="noopener noreferrer">http://www.gutenberg.org/etext/19994</a>. Acesso em: 24 set. 2025.
                     </p>
                   </div>
@@ -1153,8 +1228,8 @@ function Book() {
                 <p
                   className="mt-2 mb-6"
                   style={{
-                    fontFamily: 'Ubuntu, sans-serif',
-                    color: '#000000',
+                    fontFamily: 'var(--book-font-body)',
+                    color: 'var(--book-text-body)',
                     fontSize: '10px',
                   }}
                 >
@@ -1164,6 +1239,7 @@ function Book() {
                 {/* Conteúdo do botão do professor - Tabela comparativa */}
                 <div className="my-6">
                   <TeacherButton
+              contrastMode={prefs.contrastMode}
                     visible={SHOW_TEACHER_BUTTON}
                     content={
                       <>
@@ -1180,7 +1256,7 @@ function Book() {
                                   <>
                                     <p className="mb-2 font-semibold">
                                       {question.number !== undefined && (
-                                        <span style={{ color: '#00776E', fontWeight: 'bold' }}>{question.number}. </span>
+                                        <span style={{ color: 'var(--book-text-h4)', fontWeight: 'bold' }}>{question.number}. </span>
                                       )}
                                       Tabela:
                                     </p>
@@ -1201,7 +1277,7 @@ function Book() {
 
                                       return (
                                         <div key={row.id} className="mb-4">
-                                          <p className="mb-2 font-semibold" style={{ color: '#0E3B5D' }}>
+                                          <p className="mb-2 font-semibold" style={{ color: 'var(--book-chapter-label)' }}>
                                             {question.columns[0]} {firstColumnValue}:
                                           </p>
                                           {columnAnswers.map((colAnswer, idx) => (
@@ -1228,9 +1304,9 @@ function Book() {
                               return question.subQuestions.map((subQ) => (
                                 <p key={subQ.letter} className="mb-3">
                                   {question.number !== undefined && (
-                                    <span style={{ color: '#00776E', fontWeight: 'bold' }}>{question.number}. </span>
+                                    <span style={{ color: 'var(--book-text-h4)', fontWeight: 'bold' }}>{question.number}. </span>
                                   )}
-                                  <span style={{ color: '#00776E', fontWeight: 'bold' }}>{subQ.letter}) </span>
+                                  <span style={{ color: 'var(--book-text-h4)', fontWeight: 'bold' }}>{subQ.letter}) </span>
                                   <span dangerouslySetInnerHTML={{ __html: subQ.correctAnswer || '' }} />
                                 </p>
                               ));
@@ -1240,7 +1316,7 @@ function Book() {
                               return (
                                 <p className="mb-3">
                                   {question.number !== undefined && (
-                                    <span style={{ color: '#00776E', fontWeight: 'bold' }}>{question.number}. </span>
+                                    <span style={{ color: 'var(--book-text-h4)', fontWeight: 'bold' }}>{question.number}. </span>
                                   )}
                                   <span dangerouslySetInnerHTML={{ __html: question.correctAnswer }} />
                                 </p>
@@ -1257,9 +1333,9 @@ function Book() {
                               return question.subQuestions.map((subQ) => (
                                 <p key={subQ.letter} className="mb-3">
                                   {question.number !== undefined && (
-                                    <span style={{ color: '#00776E', fontWeight: 'bold' }}>{question.number}. </span>
+                                    <span style={{ color: 'var(--book-text-h4)', fontWeight: 'bold' }}>{question.number}. </span>
                                   )}
-                                  <span style={{ color: '#00776E', fontWeight: 'bold' }}>{subQ.letter}) </span>
+                                  <span style={{ color: 'var(--book-text-h4)', fontWeight: 'bold' }}>{subQ.letter}) </span>
                                   <span dangerouslySetInnerHTML={{ __html: subQ.correctAnswer || '' }} />
                                 </p>
                               ));
@@ -1269,7 +1345,7 @@ function Book() {
                               return (
                                 <p className="mb-3">
                                   {question.number !== undefined && (
-                                    <span style={{ color: '#00776E', fontWeight: 'bold' }}>{question.number}. </span>
+                                    <span style={{ color: 'var(--book-text-h4)', fontWeight: 'bold' }}>{question.number}. </span>
                                   )}
                                   <span dangerouslySetInnerHTML={{ __html: question.correctAnswer }} />
                                 </p>
@@ -1286,9 +1362,9 @@ function Book() {
                               return question.subQuestions.map((subQ) => (
                                 <p key={subQ.letter} className="mb-3">
                                   {question.number !== undefined && (
-                                    <span style={{ color: '#00776E', fontWeight: 'bold' }}>{question.number}. </span>
+                                    <span style={{ color: 'var(--book-text-h4)', fontWeight: 'bold' }}>{question.number}. </span>
                                   )}
-                                  <span style={{ color: '#00776E', fontWeight: 'bold' }}>{subQ.letter}) </span>
+                                  <span style={{ color: 'var(--book-text-h4)', fontWeight: 'bold' }}>{subQ.letter}) </span>
                                   <span dangerouslySetInnerHTML={{ __html: subQ.correctAnswer || '' }} />
                                 </p>
                               ));
@@ -1298,7 +1374,7 @@ function Book() {
                               return (
                                 <p className="mb-3">
                                   {question.number !== undefined && (
-                                    <span style={{ color: '#00776E', fontWeight: 'bold' }}>{question.number}. </span>
+                                    <span style={{ color: 'var(--book-text-h4)', fontWeight: 'bold' }}>{question.number}. </span>
                                   )}
                                   <span dangerouslySetInnerHTML={{ __html: question.correctAnswer }} />
                                 </p>
@@ -1343,11 +1419,13 @@ function Book() {
                     userAnswers={userAnswers}
                     title="Questões da Página 21"
                     fileName="questoes-pagina-21.pdf"
+                    contrastMode={prefs.contrastMode}
                   />
                 </div>
                 <Pagination currentPage={21} />
                 <div className="my-6">
                   <TeacherButton
+              contrastMode={prefs.contrastMode}
                     visible={SHOW_TEACHER_BUTTON}
                     content={
                       <>
@@ -1365,7 +1443,11 @@ function Book() {
                 <p className="mb-4 indent-6">
                   <strong>Texto II</strong>
                 </p>
-                <CaixaTexto title='O leão e o rato' backgroundColor="white" columns={2}>
+                <CaixaTexto
+                  title='O leão e o rato'
+                  backgroundColor={isModo1 ? undefined : 'white'}
+                  columns={2}
+                >
                   <div className="grid grid-cols-1 lg:grid-cols-2" style={{ marginLeft: '10.0rem' }}>
                     <div>
                       <p className="mb-4">
@@ -1416,7 +1498,11 @@ function Book() {
                   </div>
                   {/* Imagem */}
                   <div className="flex flex-col items-center my-6">
-                    <img src="images/leao.png" className="max-w-[60%]" />
+                    <img
+                      src="images/leao.png"
+                      alt="Ilustração de um leão."
+                      className="max-w-[60%]"
+                    />
                     <p className="text-[10px] text-slate-600 mt-2" style={{ fontSize: '10px' }}>tada/stock.adobe.com
                     </p>
                   </div>
@@ -1424,8 +1510,8 @@ function Book() {
                 <p
                   className="mt-2 mb-6"
                   style={{
-                    fontFamily: 'Ubuntu, sans-serif',
-                    color: '#000000',
+                    fontFamily: 'var(--book-font-body)',
+                    color: 'var(--book-text-body)',
                     fontSize: '10px',
                   }}
                 >
@@ -1435,6 +1521,7 @@ function Book() {
                 {/* Conteúdo do botão do professor */}
                 <div className="my-6">
                   <TeacherButton
+              contrastMode={prefs.contrastMode}
                     visible={SHOW_TEACHER_BUTTON}
                     content={
                       <>
@@ -1453,16 +1540,16 @@ function Book() {
                                     <div key={subQ.letter} className="mb-4">
                                       <p className="mb-2">
                                         {question.number !== undefined && (
-                                          <span style={{ color: '#00776E', fontWeight: 'bold' }}>{question.number}. </span>
+                                          <span style={{ color: 'var(--book-text-h4)', fontWeight: 'bold' }}>{question.number}. </span>
                                         )}
-                                        <span style={{ color: '#00776E', fontWeight: 'bold' }}>{subQ.letter}) </span>
-                                        <span style={{ color: 'black' }}>{subQ.question}</span>
+                                        <span style={{ color: 'var(--book-text-h4)', fontWeight: 'bold' }}>{subQ.letter}) </span>
+                                        <span style={{ color: 'var(--book-text-body)' }}>{subQ.question}</span>
                                       </p>
                                       <ul className="question-subitems" style={{ paddingLeft: '1.5rem', listStyleType: 'disc' }}>
                                         {subQ.subItems.map((subItem, index) => (
                                           <li key={index} className="mb-2">
                                             <p className="mb-1">
-                                              <span style={{ color: 'black' }}>{subItem.label}: </span>
+                                              <span style={{ color: 'var(--book-text-body)' }}>{subItem.label}: </span>
                                               <span dangerouslySetInnerHTML={{ __html: subItem.correctAnswer || '' }} />
                                             </p>
                                           </li>
@@ -1475,9 +1562,9 @@ function Book() {
                                 return (
                                   <p key={subQ.letter} className="mb-3">
                                     {question.number !== undefined && (
-                                      <span style={{ color: '#00776E', fontWeight: 'bold' }}>{question.number}. </span>
+                                      <span style={{ color: 'var(--book-text-h4)', fontWeight: 'bold' }}>{question.number}. </span>
                                     )}
-                                    <span style={{ color: '#00776E', fontWeight: 'bold' }}>{subQ.letter}) </span>
+                                    <span style={{ color: 'var(--book-text-h4)', fontWeight: 'bold' }}>{subQ.letter}) </span>
                                     <span dangerouslySetInnerHTML={{ __html: subQ.correctAnswer || '' }} />
                                   </p>
                                 );
@@ -1488,7 +1575,7 @@ function Book() {
                               return (
                                 <p className="mb-3">
                                   {question.number !== undefined && (
-                                    <span style={{ color: '#00776E', fontWeight: 'bold' }}>{question.number}. </span>
+                                    <span style={{ color: 'var(--book-text-h4)', fontWeight: 'bold' }}>{question.number}. </span>
                                   )}
                                   <span dangerouslySetInnerHTML={{ __html: question.correctAnswer }} />
                                 </p>
@@ -1505,9 +1592,9 @@ function Book() {
                             return (
                               <p className="mb-3">
                                 {question.number !== undefined && (
-                                  <span style={{ color: '#00776E', fontWeight: 'bold' }}>{question.number}. </span>
+                                  <span style={{ color: 'var(--book-text-h4)', fontWeight: 'bold' }}>{question.number}. </span>
                                 )}
-                                <span style={{ color: '#00776E', fontWeight: 'bold' }}>{correctLetter}) </span>
+                                <span style={{ color: 'var(--book-text-h4)', fontWeight: 'bold' }}>{correctLetter}) </span>
                                 <span dangerouslySetInnerHTML={{ __html: correctOption || '' }} />
                               </p>
                             );
@@ -1522,9 +1609,9 @@ function Book() {
                               return question.subQuestions.map((subQ) => (
                                 <p key={subQ.letter} className="mb-3">
                                   {question.number !== undefined && (
-                                    <span style={{ color: '#00776E', fontWeight: 'bold' }}>{question.number}. </span>
+                                    <span style={{ color: 'var(--book-text-h4)', fontWeight: 'bold' }}>{question.number}. </span>
                                   )}
-                                  <span style={{ color: '#00776E', fontWeight: 'bold' }}>{subQ.letter}) </span>
+                                  <span style={{ color: 'var(--book-text-h4)', fontWeight: 'bold' }}>{subQ.letter}) </span>
                                   <span dangerouslySetInnerHTML={{ __html: subQ.correctAnswer || '' }} />
                                 </p>
                               ));
@@ -1534,7 +1621,7 @@ function Book() {
                               return (
                                 <p className="mb-3">
                                   {question.number !== undefined && (
-                                    <span style={{ color: '#00776E', fontWeight: 'bold' }}>{question.number}. </span>
+                                    <span style={{ color: 'var(--book-text-h4)', fontWeight: 'bold' }}>{question.number}. </span>
                                   )}
                                   <span dangerouslySetInnerHTML={{ __html: question.correctAnswer }} />
                                 </p>
@@ -1573,6 +1660,7 @@ function Book() {
                     userAnswers={userAnswers}
                     title="Questões da Página 22"
                     fileName="questoes-pagina-22.pdf"
+                    contrastMode={prefs.contrastMode}
                   />
                 </div>
 
@@ -1580,6 +1668,7 @@ function Book() {
                 {/* Conteúdo do botão do professor */}
                 <div className="my-6">
                   <TeacherButton
+              contrastMode={prefs.contrastMode}
                     visible={SHOW_TEACHER_BUTTON}
                     content={
                       <>
@@ -1594,9 +1683,9 @@ function Book() {
                               return question.subQuestions.map((subQ) => (
                                 <p key={subQ.letter} className="mb-3">
                                   {question.number !== undefined && (
-                                    <span style={{ color: '#00776E', fontWeight: 'bold' }}>{question.number}. </span>
+                                    <span style={{ color: 'var(--book-text-h4)', fontWeight: 'bold' }}>{question.number}. </span>
                                   )}
-                                  <span style={{ color: '#00776E', fontWeight: 'bold' }}>{subQ.letter}) </span>
+                                  <span style={{ color: 'var(--book-text-h4)', fontWeight: 'bold' }}>{subQ.letter}) </span>
                                   <span dangerouslySetInnerHTML={{ __html: subQ.correctAnswer || '' }} />
                                 </p>
                               ));
@@ -1606,7 +1695,7 @@ function Book() {
                               return (
                                 <p className="mb-3">
                                   {question.number !== undefined && (
-                                    <span style={{ color: '#00776E', fontWeight: 'bold' }}>{question.number}. </span>
+                                    <span style={{ color: 'var(--book-text-h4)', fontWeight: 'bold' }}>{question.number}. </span>
                                   )}
                                   <span dangerouslySetInnerHTML={{ __html: question.correctAnswer }} />
                                 </p>
@@ -1623,9 +1712,9 @@ function Book() {
                               return question.subQuestions.map((subQ) => (
                                 <p key={subQ.letter} className="mb-3">
                                   {question.number !== undefined && (
-                                    <span style={{ color: '#00776E', fontWeight: 'bold' }}>{question.number}. </span>
+                                    <span style={{ color: 'var(--book-text-h4)', fontWeight: 'bold' }}>{question.number}. </span>
                                   )}
-                                  <span style={{ color: '#00776E', fontWeight: 'bold' }}>{subQ.letter}) </span>
+                                  <span style={{ color: 'var(--book-text-h4)', fontWeight: 'bold' }}>{subQ.letter}) </span>
                                   <span dangerouslySetInnerHTML={{ __html: subQ.correctAnswer || '' }} />
                                 </p>
                               ));
@@ -1635,7 +1724,7 @@ function Book() {
                               return (
                                 <p className="mb-3">
                                   {question.number !== undefined && (
-                                    <span style={{ color: '#00776E', fontWeight: 'bold' }}>{question.number}. </span>
+                                    <span style={{ color: 'var(--book-text-h4)', fontWeight: 'bold' }}>{question.number}. </span>
                                   )}
                                   <span dangerouslySetInnerHTML={{ __html: question.correctAnswer }} />
                                 </p>
@@ -1675,11 +1764,12 @@ function Book() {
                     userAnswers={userAnswers}
                     title="Questões da Página 23"
                     fileName="questoes-pagina-23.pdf"
+                    contrastMode={prefs.contrastMode}
                   />
                 </div>
                 <MinhaVersao />
                 <p className="mb-4 indent-6">Você já leu e analisou duas fábulas clássicas: A lebre e a tartaruga e O leão e o rato. Agora, sua tarefa será fazer uma reescrita criativa de uma dessas histórias, mas você terá dois desafios.</p>
-                <ol className="list-decimal marker:text-[#BF3154] ml-6 mb-4">
+                <ol className="list-decimal marker:text-[color:var(--book-question-marker)] ml-6 mb-4">
                   <li><strong>Mude a forma do texto</strong>: se a fábula escolhida era em prosa, será reescrita em versos; se era em versos, será reescrita em prosa.
                   </li>
                   <li><strong>Modifique algum elemento da narrativa</strong> (a situação inicial, o conflito ou o desfecho): com o objetivo de alterar a moral da história.
@@ -1692,6 +1782,7 @@ function Book() {
                 {/* Conteúdo do botão do professor */}
                 <div className="my-6">
                   <TeacherButton
+              contrastMode={prefs.contrastMode}
                     visible={SHOW_TEACHER_BUTTON}
                     content={
                       <>
@@ -1707,7 +1798,7 @@ function Book() {
                 </div>
                 <p className="mb-4 indent-6"><strong>Preparação</strong></p>
                 <p className="mb-4 indent-6">Antes de escrever, siga os passos abaixo para planejar sua nova versão da fábula.</p>
-                <ol className="list-decimal marker:text-[#BF3154] ml-6 mb-4">
+                <ol className="list-decimal marker:text-[color:var(--book-question-marker)] ml-6 mb-4">
                   <li><strong>Mude a forma do texto</strong>: se a fábula escolhida era em prosa, será reescrita em versos; se era em versos, será reescrita em prosa.
                   </li>
                   <li><strong>Modifique algum elemento da narrativa</strong> (a situação inicial, o conflito ou o desfecho): com o objetivo de alterar a moral da história.
@@ -1726,13 +1817,14 @@ function Book() {
                     userAnswers={userAnswers}
                     title="Questões da Página 24"
                     fileName="questoes-pagina-24.pdf"
+                    contrastMode={prefs.contrastMode}
                   />
                 </div>
                 <Pagination currentPage={25} />
                 <p className="mb-4 indent-6"><strong>Produção</strong></p>
                 <p className="mb-4 indent-6">Agora é hora de escrever sua fábula. Durante a produção, preste atenção aos seguintes pontos:
                 </p>
-                <ol className="list-decimal marker:text-[#BF3154] ml-6 mb-4">
+                <ol className="list-decimal marker:text-[color:var(--book-question-marker)] ml-6 mb-4">
                   <li>Mesmo com as mudanças, sua história deve manter os três elementos principais da estrutura da fábula: situação inicial, conflito e desfecho. </li>
                   <li>Use os mesmos personagens da história original, mas mude o que acontece com eles para construir uma nova lição de moral. </li>
                   <li>Se estiver escrevendo em versos, lembre-se das rimas, do ritmo e da sonoridade do texto. </li>
@@ -1789,10 +1881,11 @@ function Book() {
                   onAnswerChange={handleAnswerChange}
                 />
                 <Pagination currentPage={26} />
-                <ProducaoTexto instanceId="producaoTexto2" />
+                <ProducaoTexto instanceId="producaoTexto2" contrastMode={prefs.contrastMode} />
                 <Pagination currentPage={27} />
                 <div className="my-6">
                   <TeacherButton
+              contrastMode={prefs.contrastMode}
                     visible={SHOW_TEACHER_BUTTON}
                     content={
                       <>
@@ -1843,7 +1936,11 @@ function Book() {
 
                   {/* Imagem */}
                   <div className="flex flex-col items-center my-6">
-                    <img src="images/raposa.png" className="max-w-[50%]" />
+                    <img
+                      src="images/raposa.png"
+                      alt="Ilustração de uma raposa."
+                      className="max-w-[50%]"
+                    />
                     <p className="text-[10px] text-slate-600 mt-2" style={{ fontSize: '10px' }}>Saenkova Iuliia/stock.adobe.com
                     </p>
                   </div>
@@ -1851,8 +1948,8 @@ function Book() {
                 <p
                   className="mt-2 mb-6"
                   style={{
-                    fontFamily: 'Ubuntu, sans-serif',
-                    color: '#000000',
+                    fontFamily: 'var(--book-font-body)',
+                    color: 'var(--book-text-body)',
                     fontSize: '10px',
                   }}
                 >
@@ -1862,6 +1959,7 @@ function Book() {
                 {/* Conteúdo do botão do professor */}
                 <div className="my-6">
                   <TeacherButton
+              contrastMode={prefs.contrastMode}
                     visible={SHOW_TEACHER_BUTTON}
                     content={
                       <>
@@ -1881,9 +1979,9 @@ function Book() {
                               return (
                                 <p key={stmt.letter} className="mb-3">
                                   {question.number !== undefined && (
-                                    <span style={{ color: '#00776E', fontWeight: 'bold' }}>{question.number}. </span>
+                                    <span style={{ color: 'var(--book-text-h4)', fontWeight: 'bold' }}>{question.number}. </span>
                                   )}
-                                  <span style={{ color: '#00776E', fontWeight: 'bold' }}>{stmt.letter}) </span>
+                                  <span style={{ color: 'var(--book-text-h4)', fontWeight: 'bold' }}>{stmt.letter}) </span>
                                   <span dangerouslySetInnerHTML={{ __html: answerText }} />
                                 </p>
                               );
@@ -1899,9 +1997,9 @@ function Book() {
                               return question.subQuestions.map((subQ) => (
                                 <p key={subQ.letter} className="mb-3">
                                   {question.number !== undefined && (
-                                    <span style={{ color: '#00776E', fontWeight: 'bold' }}>{question.number}. </span>
+                                    <span style={{ color: 'var(--book-text-h4)', fontWeight: 'bold' }}>{question.number}. </span>
                                   )}
-                                  <span style={{ color: '#00776E', fontWeight: 'bold' }}>{subQ.letter}) </span>
+                                  <span style={{ color: 'var(--book-text-h4)', fontWeight: 'bold' }}>{subQ.letter}) </span>
                                   <span dangerouslySetInnerHTML={{ __html: subQ.correctAnswer || '' }} />
                                 </p>
                               ));
@@ -1911,7 +2009,7 @@ function Book() {
                               return (
                                 <p className="mb-3">
                                   {question.number !== undefined && (
-                                    <span style={{ color: '#00776E', fontWeight: 'bold' }}>{question.number}. </span>
+                                    <span style={{ color: 'var(--book-text-h4)', fontWeight: 'bold' }}>{question.number}. </span>
                                   )}
                                   <span dangerouslySetInnerHTML={{ __html: question.correctAnswer }} />
                                 </p>
@@ -1928,9 +2026,9 @@ function Book() {
                               return question.subQuestions.map((subQ) => (
                                 <p key={subQ.letter} className="mb-3">
                                   {question.number !== undefined && (
-                                    <span style={{ color: '#00776E', fontWeight: 'bold' }}>{question.number}. </span>
+                                    <span style={{ color: 'var(--book-text-h4)', fontWeight: 'bold' }}>{question.number}. </span>
                                   )}
-                                  <span style={{ color: '#00776E', fontWeight: 'bold' }}>{subQ.letter}) </span>
+                                  <span style={{ color: 'var(--book-text-h4)', fontWeight: 'bold' }}>{subQ.letter}) </span>
                                   <span dangerouslySetInnerHTML={{ __html: subQ.correctAnswer || '' }} />
                                 </p>
                               ));
@@ -1940,7 +2038,7 @@ function Book() {
                               return (
                                 <p className="mb-3">
                                   {question.number !== undefined && (
-                                    <span style={{ color: '#00776E', fontWeight: 'bold' }}>{question.number}. </span>
+                                    <span style={{ color: 'var(--book-text-h4)', fontWeight: 'bold' }}>{question.number}. </span>
                                   )}
                                   <span dangerouslySetInnerHTML={{ __html: question.correctAnswer }} />
                                 </p>
@@ -1957,9 +2055,9 @@ function Book() {
                               return question.subQuestions.map((subQ) => (
                                 <p key={subQ.letter} className="mb-3">
                                   {question.number !== undefined && (
-                                    <span style={{ color: '#00776E', fontWeight: 'bold' }}>{question.number}. </span>
+                                    <span style={{ color: 'var(--book-text-h4)', fontWeight: 'bold' }}>{question.number}. </span>
                                   )}
-                                  <span style={{ color: '#00776E', fontWeight: 'bold' }}>{subQ.letter}) </span>
+                                  <span style={{ color: 'var(--book-text-h4)', fontWeight: 'bold' }}>{subQ.letter}) </span>
                                   <span dangerouslySetInnerHTML={{ __html: subQ.correctAnswer || '' }} />
                                 </p>
                               ));
@@ -1969,7 +2067,7 @@ function Book() {
                               return (
                                 <p className="mb-3">
                                   {question.number !== undefined && (
-                                    <span style={{ color: '#00776E', fontWeight: 'bold' }}>{question.number}. </span>
+                                    <span style={{ color: 'var(--book-text-h4)', fontWeight: 'bold' }}>{question.number}. </span>
                                   )}
                                   <span dangerouslySetInnerHTML={{ __html: question.correctAnswer }} />
                                 </p>
@@ -1986,9 +2084,9 @@ function Book() {
                               return question.subQuestions.map((subQ) => (
                                 <p key={subQ.letter} className="mb-3">
                                   {question.number !== undefined && (
-                                    <span style={{ color: '#00776E', fontWeight: 'bold' }}>{question.number}. </span>
+                                    <span style={{ color: 'var(--book-text-h4)', fontWeight: 'bold' }}>{question.number}. </span>
                                   )}
-                                  <span style={{ color: '#00776E', fontWeight: 'bold' }}>{subQ.letter}) </span>
+                                  <span style={{ color: 'var(--book-text-h4)', fontWeight: 'bold' }}>{subQ.letter}) </span>
                                   <span dangerouslySetInnerHTML={{ __html: subQ.correctAnswer || '' }} />
                                 </p>
                               ));
@@ -1998,7 +2096,7 @@ function Book() {
                               return (
                                 <p className="mb-3">
                                   {question.number !== undefined && (
-                                    <span style={{ color: '#00776E', fontWeight: 'bold' }}>{question.number}. </span>
+                                    <span style={{ color: 'var(--book-text-h4)', fontWeight: 'bold' }}>{question.number}. </span>
                                   )}
                                   <span dangerouslySetInnerHTML={{ __html: question.correctAnswer }} />
                                 </p>
@@ -2055,6 +2153,7 @@ function Book() {
                     userAnswers={userAnswers}
                     title="Questões da Página 28"
                     fileName="questoes-pagina-28.pdf"
+                    contrastMode={prefs.contrastMode}
                   />
                 </div>
 
@@ -2062,6 +2161,7 @@ function Book() {
                 {/* Conteúdo do botão do professor */}
                 <div className="my-6">
                   <TeacherButton
+              contrastMode={prefs.contrastMode}
                     visible={SHOW_TEACHER_BUTTON}
                     content={
                       <>
@@ -2081,9 +2181,9 @@ function Book() {
                               return (
                                 <p key={stmt.letter} className="mb-3">
                                   {question.number !== undefined && (
-                                    <span style={{ color: '#00776E', fontWeight: 'bold' }}>{question.number}. </span>
+                                    <span style={{ color: 'var(--book-text-h4)', fontWeight: 'bold' }}>{question.number}. </span>
                                   )}
-                                  <span style={{ color: '#00776E', fontWeight: 'bold' }}>{stmt.letter}) </span>
+                                  <span style={{ color: 'var(--book-text-h4)', fontWeight: 'bold' }}>{stmt.letter}) </span>
                                   <span dangerouslySetInnerHTML={{ __html: answerText }} />
                                 </p>
                               );
@@ -2099,9 +2199,9 @@ function Book() {
                               return question.subQuestions.map((subQ) => (
                                 <p key={subQ.letter} className="mb-3">
                                   {question.number !== undefined && (
-                                    <span style={{ color: '#00776E', fontWeight: 'bold' }}>{question.number}. </span>
+                                    <span style={{ color: 'var(--book-text-h4)', fontWeight: 'bold' }}>{question.number}. </span>
                                   )}
-                                  <span style={{ color: '#00776E', fontWeight: 'bold' }}>{subQ.letter}) </span>
+                                  <span style={{ color: 'var(--book-text-h4)', fontWeight: 'bold' }}>{subQ.letter}) </span>
                                   <span dangerouslySetInnerHTML={{ __html: subQ.correctAnswer || '' }} />
                                 </p>
                               ));
@@ -2111,7 +2211,7 @@ function Book() {
                               return (
                                 <p className="mb-3">
                                   {question.number !== undefined && (
-                                    <span style={{ color: '#00776E', fontWeight: 'bold' }}>{question.number}. </span>
+                                    <span style={{ color: 'var(--book-text-h4)', fontWeight: 'bold' }}>{question.number}. </span>
                                   )}
                                   <span dangerouslySetInnerHTML={{ __html: question.correctAnswer }} />
                                 </p>
@@ -2128,9 +2228,9 @@ function Book() {
                               return question.subQuestions.map((subQ) => (
                                 <p key={subQ.letter} className="mb-3">
                                   {question.number !== undefined && (
-                                    <span style={{ color: '#00776E', fontWeight: 'bold' }}>{question.number}. </span>
+                                    <span style={{ color: 'var(--book-text-h4)', fontWeight: 'bold' }}>{question.number}. </span>
                                   )}
-                                  <span style={{ color: '#00776E', fontWeight: 'bold' }}>{subQ.letter}) </span>
+                                  <span style={{ color: 'var(--book-text-h4)', fontWeight: 'bold' }}>{subQ.letter}) </span>
                                   <span dangerouslySetInnerHTML={{ __html: subQ.correctAnswer || '' }} />
                                 </p>
                               ));
@@ -2140,7 +2240,7 @@ function Book() {
                               return (
                                 <p className="mb-3">
                                   {question.number !== undefined && (
-                                    <span style={{ color: '#00776E', fontWeight: 'bold' }}>{question.number}. </span>
+                                    <span style={{ color: 'var(--book-text-h4)', fontWeight: 'bold' }}>{question.number}. </span>
                                   )}
                                   <span dangerouslySetInnerHTML={{ __html: question.correctAnswer }} />
                                 </p>
@@ -2183,6 +2283,7 @@ function Book() {
                     userAnswers={userAnswers}
                     title="Questões da Página 29"
                     fileName="questoes-pagina-29.pdf"
+                    contrastMode={prefs.contrastMode}
                   />
                 </div>
 
@@ -2197,14 +2298,14 @@ function Book() {
                 <p className="mb-4 indent-6">
                   Siga os passos a seguir para organizar o seu texto.
                 </p>
-                <ol className="list-decimal marker:text-[#BF3154] ml-6 mb-4">
+                <ol className="list-decimal marker:text-[color:var(--book-question-marker)] ml-6 mb-4">
                   <li><strong>Escolha a moral da sua fábula</strong>
                   </li>
                   <p className="mb-4 indent-6">
                     A moral é a mensagem que a sua história vai transmitir. Por isso, ela precisa ser escolhida logo no início do planejamento. Você pode criar a sua própria moral ou escolher uma das
                     sugestões listadas a seguir.
                   </p>
-                  <ul className="list-disc marker:text-[#BF3154] ml-6 mb-4">
+                  <ul className="list-disc marker:text-[color:var(--book-question-marker)] ml-6 mb-4">
                     <li>"Nem todo elogio é sincero."</li>
                     <li>"A pressa é inimiga da perfeição."</li>
                     <li>"Gentileza gera gentileza."</li>
@@ -2236,24 +2337,25 @@ function Book() {
                     userAnswers={userAnswers}
                     title="Questões da Página 30"
                     fileName="questoes-pagina-30.pdf"
+                    contrastMode={prefs.contrastMode}
                   />
                 </div>
                 <Pagination currentPage={31} />
                 <p className="mb-4 indent-6">É hora de escrever sua fábula. Produza um texto original que apresente:</p>
-                <ul className="list-disc marker:text-[#BF3154] ml-6 mb-4">
+                <ul className="list-disc marker:text-[color:var(--book-question-marker)] ml-6 mb-4">
                   <li>enredo curto com começo, meio e fim;</li>
                   <li>personagens simbólicos que se comportam como seres humanos;</li>
                   <li>problema ou desafio que dá origem ao conflito da história;</li>
                   <li>lição apresentada no final do texto ou sugerida pelas atitudes dos personagens.</li>
                 </ul>
                 <p className="mb-4 indent-6">Para isso, use:</p>
-                <ul className="list-disc marker:text-[#BF3154] ml-6 mb-4">
+                <ul className="list-disc marker:text-[color:var(--book-question-marker)] ml-6 mb-4">
                   <li>verbos no passado para contar as ações concluídas;</li>
                   <li>marcadores temporais que organizem a narrativa, como “um dia”, “então” e “enquanto isso”;</li>
                   <li>linguagem expressiva e coerente com o gênero.</li>
                 </ul>
                 <p className="mb-4 indent-6">Represente seu texto com imagens. Você pode:</p>
-                <ul className="list-disc marker:text-[#BF3154] ml-6 mb-4">
+                <ul className="list-disc marker:text-[color:var(--book-question-marker)] ml-6 mb-4">
                   <li>fazer um desenho dos personagens principais em um momento importante da história;</li>
                   <li>criar uma cena que destaque o conflito ou a moral da história;</li>
                   <li>produzir uma colagem com recortes ou buscar imagens <em>on-line</em> que combinem com o que você escreveu.</li>
@@ -2309,7 +2411,7 @@ function Book() {
                   onAnswerChange={handleAnswerChange}
                 />
                 <Pagination currentPage={32} />
-                <ProducaoTextoFabula />
+                <ProducaoTextoFabula contrastMode={prefs.contrastMode} />
               </>
             }
           />

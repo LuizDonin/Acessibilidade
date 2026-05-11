@@ -1,6 +1,5 @@
 import { ReactNode } from 'react';
 import { QuestionNumber } from './QuestionNumber';
-import { COLORS } from '../../constants/colors';
 
 interface QuestionWrapperProps {
   number?: number;
@@ -25,9 +24,12 @@ export function QuestionWrapper({
       <p className="mb-4">
         <QuestionNumber number={number} />
         {useHTML ? (
-          <span style={{ color: COLORS.text.primary }} dangerouslySetInnerHTML={{ __html: question }} />
+          <span
+            style={{ color: 'var(--book-text-body, #000000)' }}
+            dangerouslySetInnerHTML={{ __html: question }}
+          />
         ) : (
-          <span style={{ color: COLORS.text.primary }}>{question}</span>
+          <span style={{ color: 'var(--book-text-body, #000000)' }}>{question}</span>
         )}
       </p>
       {children}

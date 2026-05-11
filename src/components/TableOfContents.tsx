@@ -1,4 +1,7 @@
-function TableOfContents() {
+import type { ContrastMode } from '../types/accessibility';
+
+function TableOfContents({ contrastMode = 'default' }: { contrastMode?: ContrastMode }) {
+  const isModo1 = contrastMode === 1;
   const scrollToChapter = (chapterId: string) => {
     const element = document.getElementById(chapterId);
     if (element) {
@@ -6,22 +9,22 @@ function TableOfContents() {
     }
   };
 
+  const linkStyle = {
+    fontSize: 'var(--book-body-size, 16px)',
+    fontStyle: 'normal' as const,
+    fontWeight: 500,
+    lineHeight: 'normal',
+  };
+
   return (
-    <nav
-      className="mb-12 p-6 rounded-lg border border-slate-200"
-      style={{
-        backgroundColor: '#EEE6D4',
-      }}
-    >
+    <nav className="book-toc-nav mb-12 p-6 rounded-lg border">
       <div className="flex flex-col md:flex-row gap-6">
-        {/* Seção Sumário */}
         <div className="flex-1">
           <div className="flex items-center gap-2 mb-4">
             <h2
               className="font-hwtArtz"
               style={{
-                color: '#0E3B5D',
-                fontSize: '28px',
+                fontSize: 'var(--book-h3-size, 28px)',
                 fontStyle: 'normal',
                 fontWeight: 800,
                 lineHeight: 'normal',
@@ -33,74 +36,53 @@ function TableOfContents() {
           <ol className="space-y-3">
             <li>
               <button
+                type="button"
                 onClick={() => scrollToChapter('chapter1')}
-                className="text-left w-full font-Ubuntu flex items-center gap-2"
-                style={{
-                  color: '#144468',
-                  fontSize: '16px',
-                  fontStyle: 'normal',
-                  fontWeight: 500,
-                  lineHeight: 'normal',
-                }}
+                className="book-toc-link text-left w-full font-Ubuntu flex items-center gap-2"
+                style={linkStyle}
               >
                 <img
                   src="images/Union.svg"
-                  alt="Union"
+                  alt=""
                   className="w-4 h-4 object-contain"
+                  aria-hidden
                 />
-                <span>
-                  Capítulo 1:
-                </span>{' '}
-                <span>
-                  Notícias
-                </span>
+                <span>Capítulo 1:</span> <span>Notícias</span>
               </button>
             </li>
             <li>
               <button
+                type="button"
                 onClick={() => scrollToChapter('chapter2')}
-                className="text-left w-full font-Ubuntu flex items-center gap-2"
-                style={{
-                  color: '#144468',
-                  fontSize: '16px',
-                  fontStyle: 'normal',
-                  fontWeight: 500,
-                  lineHeight: 'normal',
-                }}
+                className="book-toc-link text-left w-full font-Ubuntu flex items-center gap-2"
+                style={linkStyle}
               >
                 <img
                   src="images/Union.svg"
-                  alt="Union"
+                  alt=""
                   className="w-4 h-4 object-contain"
+                  aria-hidden
                 />
-                <span>
-                  Capítulo 2:
-                </span>{' '}
-                <span>
-                  Fábulas
-                </span>
+                <span>Capítulo 2:</span> <span>Fábulas</span>
               </button>
             </li>
           </ol>
         </div>
 
-        {/* Divisor vertical */}
         <div
           className="hidden md:block"
           style={{
-            backgroundColor: '#0E3B5D',
+            backgroundColor: 'var(--book-table-border, #0E3B5D)',
             width: '3px',
           }}
         />
 
-        {/* Seção Tutorial */}
         <div className="flex-1 flex flex-col md:flex-row md:items-center md:justify-between gap-6">
-          {/* Texto e botão */}
           <div className="flex-1 flex flex-col gap-3">
             <p
               className="font-ubuntu text-sm md:text-base"
               style={{
-                color: '#0E3B5D',
+                color: 'var(--book-chapter-label, #0E3B5D)',
                 fontWeight: 400,
                 lineHeight: 'normal',
               }}
@@ -115,27 +97,42 @@ function TableOfContents() {
             >
               <button
                 type="button"
-                style={{
-                  padding: '10px 30px',
-                  backgroundColor: '#BF3154',
-                  boxShadow: '0px 4px 0px #9C2F4B',
-                  borderRadius: '30px',
-                  color: 'white',
-                  fontFamily: 'Ubuntu, sans-serif',
-                  fontSize: '12px',
-                  fontWeight: 700,
-                  lineHeight: '1.4em',
-                  textTransform: 'uppercase',
-                  border: 'none',
-                  cursor: 'pointer',
-                }}
+                style={
+                  isModo1
+                    ? {
+                        padding: '10px 30px',
+                        backgroundColor: 'var(--book-bg-page)',
+                        boxShadow: 'none',
+                        borderRadius: '30px',
+                        color: 'var(--book-interactive-accent)',
+                        fontFamily: 'var(--book-font-body)',
+                        fontSize: '12px',
+                        fontWeight: 700,
+                        lineHeight: '1.4em',
+                        textTransform: 'uppercase',
+                        border: '2px solid var(--book-interactive-accent)',
+                        cursor: 'pointer',
+                      }
+                    : {
+                        padding: '10px 30px',
+                        backgroundColor: 'var(--book-toc-cta-bg, #BF3154)',
+                        boxShadow: '0px 4px 0px #9C2F4B',
+                        borderRadius: '30px',
+                        color: 'var(--book-toc-cta-text, #ffffff)',
+                        fontFamily: 'var(--book-font-body)',
+                        fontSize: '12px',
+                        fontWeight: 700,
+                        lineHeight: '1.4em',
+                        textTransform: 'uppercase',
+                        border: 'none',
+                        cursor: 'pointer',
+                      }
+                }
                 onMouseEnter={(e) => {
-                  e.currentTarget.style.backgroundColor = '#9C2F4B';
-                  e.currentTarget.style.boxShadow = '0px 2px 0px #7A2440';
+                  e.currentTarget.style.opacity = '0.92';
                 }}
                 onMouseLeave={(e) => {
-                  e.currentTarget.style.backgroundColor = '#BF3154';
-                  e.currentTarget.style.boxShadow = '0px 4px 0px #9C2F4B';
+                  e.currentTarget.style.opacity = '1';
                 }}
               >
                 TUTORIAL
@@ -143,24 +140,32 @@ function TableOfContents() {
             </a>
           </div>
 
-          {/* QR Code */}
           <div className="flex flex-col items-center self-center md:self-auto">
             <a
               href="https://go.plataformaconx.com.br/bYxAg7"
               target="_blank"
               rel="noopener noreferrer"
               className="cursor-pointer"
+              aria-label="Abrir tutorial pelo QR Code"
             >
-              <img
-                src="images/qrCode.svg"
-                alt="QR Code Tutorial"
-                className="w-20 h-20 md:w-28 md:h-28 object-contain"
-              />
+              {isModo1 ? (
+                <span
+                  className="book-toc-qr-modo1 h-20 w-20 shrink-0 md:h-28 md:w-28"
+                  aria-hidden
+                />
+              ) : (
+                <img
+                  src="images/qrCode.svg"
+                  alt=""
+                  className="h-20 w-20 object-contain md:h-28 md:w-28"
+                  aria-hidden
+                />
+              )}
             </a>
             <span
               className="mt-2 text-xs md:text-sm"
               style={{
-                color: '#0E3B5D',
+                color: 'var(--book-chapter-label, #0E3B5D)',
                 fontSize: '14px',
               }}
             >

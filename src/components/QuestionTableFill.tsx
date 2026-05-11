@@ -2,7 +2,7 @@ import { UserAnswers } from '../types/questions';
 
 interface TableRow {
   id: string;
-  [key: string]: string | undefined; // Permite campos dinâmicos
+  [key: string]: string | undefined;
 }
 
 interface SubQuestion {
@@ -24,6 +24,8 @@ interface QuestionTableFillProps {
   showResults?: boolean;
 }
 
+const cellBorder = '1px solid var(--book-table-border, #0E3B5D)';
+
 function QuestionTableFill({
   questionId,
   title,
@@ -38,19 +40,21 @@ function QuestionTableFill({
   return (
     <div className="mb-6">
       {title && (
-        <p className="mb-4 font-semibold text-left" style={{ color: 'black' }}>
+        <p className="mb-4 font-semibold text-left">
           {number !== undefined && (
-            <span style={{ color: '#00776E', fontWeight: 'bold' }}>{number}. </span>
+            <span style={{ color: 'var(--book-text-h4)', fontWeight: 'bold' }}>
+              {number}.{' '}
+            </span>
           )}
-          <span style={{ color: 'black' }}>{title}</span>
+          <span style={{ color: 'var(--book-text-body)' }}>{title}</span>
         </p>
       )}
       <div className="overflow-x-auto mb-6 -mx-4 md:mx-0">
         <div className="min-w-full inline-block">
           <table
-            className="w-full border-collapse"
+            className="book-question-table w-full border-collapse"
             style={{
-              border: '3px solid #0E3B5D',
+              border: '3px solid var(--book-table-border, #0E3B5D)',
               minWidth: '100%',
             }}
           >
@@ -61,10 +65,11 @@ function QuestionTableFill({
                     key={index}
                     className={`p-2 md:p-3 font-semibold text-xs md:text-base ${index === 0 ? 'text-center' : 'text-center'}`}
                     style={{
-                      border: '1px solid #0E3B5D',
-                      backgroundColor: 'white',
-                      color: '#0E3B5D',
-                      fontFamily: 'Ubuntu, sans-serif',
+                      border: cellBorder,
+                      backgroundColor:
+                        'var(--book-question-table-head-bg, #ffffff)',
+                      color: 'var(--book-question-table-head-text, #0E3B5D)',
+                      fontFamily: 'var(--book-font-body, Ubuntu, sans-serif)',
                       whiteSpace: 'normal',
                       wordBreak: 'break-word',
                       textAlign: 'center',
@@ -77,19 +82,19 @@ function QuestionTableFill({
             </thead>
             <tbody>
               {rows.map((row) => {
-                // Obtém o primeiro campo da row (primeira coluna) - pode ser 'paragraph' ou qualquer outro nome
-                const firstColumnKey = Object.keys(row).find(key => key !== 'id') || 'paragraph';
+                const firstColumnKey =
+                  Object.keys(row).find((key) => key !== 'id') || 'paragraph';
                 const firstColumnValue = row[firstColumnKey] || '';
-                
+
                 return (
                   <tr key={row.id}>
                     <td
                       className="p-2 md:p-3 font-semibold text-xs md:text-base text-center"
                       style={{
-                        border: '1px solid #0E3B5D',
-                        backgroundColor: 'white',
-                        color: '#0E3B5D',
-                        fontFamily: 'Ubuntu, sans-serif',
+                        border: cellBorder,
+                        backgroundColor: 'var(--book-table-cell-bg, #ffffff)',
+                        color: 'var(--book-text-body, #0E3B5D)',
+                        fontFamily: 'var(--book-font-body, Ubuntu, sans-serif)',
                         whiteSpace: 'normal',
                         wordBreak: 'break-word',
                         textAlign: 'center',
@@ -99,29 +104,36 @@ function QuestionTableFill({
                     </td>
                     {columns.slice(1).map((_, colIndex) => {
                       const fieldId = `${questionId}_${row.id}_col${colIndex + 1}`;
-                      // Acessa os campos dinamicamente: text1, text2, etc. ou qualquer outro nome
-                      const fieldKeys = Object.keys(row).filter(key => key !== 'id' && key !== firstColumnKey);
-                      const fieldValue = fieldKeys[colIndex] ? row[fieldKeys[colIndex]] : '';
-                      const userAnswer = (userAnswers[fieldId] as string) || fieldValue || '';
-                      
+                      const fieldKeys = Object.keys(row).filter(
+                        (key) => key !== 'id' && key !== firstColumnKey
+                      );
+                      const fieldValue = fieldKeys[colIndex]
+                        ? row[fieldKeys[colIndex]]
+                        : '';
+                      const userAnswer =
+                        (userAnswers[fieldId] as string) || fieldValue || '';
+
                       return (
                         <td
                           key={colIndex}
                           className="p-2 md:p-3"
                           style={{
-                            border: '1px solid #0E3B5D',
-                            backgroundColor: 'white',
+                            border: cellBorder,
+                            backgroundColor:
+                              'var(--book-table-cell-bg, #ffffff)',
                           }}
                         >
                           <textarea
                             value={userAnswer}
-                            onChange={(e) => onAnswerChange(questionId, fieldId, e.target.value)}
+                            onChange={(e) =>
+                              onAnswerChange(questionId, fieldId, e.target.value)
+                            }
                             placeholder="Digite aqui..."
                             disabled={showResults}
                             className="w-full p-1 md:p-2 border-0 rounded focus:outline-none resize-y min-h-[50px] md:min-h-[60px] text-xs md:text-base"
                             style={{
-                              fontFamily: 'Ubuntu, sans-serif',
-                              color: '#0E3B5D',
+                              fontFamily: 'var(--book-font-body, Ubuntu, sans-serif)',
+                              color: 'var(--book-text-body, #0E3B5D)',
                               backgroundColor: 'transparent',
                               border: 'none',
                             }}
@@ -136,27 +148,33 @@ function QuestionTableFill({
           </table>
         </div>
       </div>
-      {/* Subquestões */}
       {subQuestions && subQuestions.length > 0 && (
         <div className="space-y-4">
           {subQuestions.map((subQ) => {
             const subQuestionId = `${questionId}_${subQ.letter}`;
             const subUserAnswer = (userAnswers[subQuestionId] as string) || '';
-            
+
             return (
               <div key={subQ.letter} className="mb-4">
                 <p className="mb-2">
-                  <span style={{ color: '#00776E', fontWeight: 'bold' }}>{subQ.letter}) </span>
-                  <span style={{ color: 'black' }}>{subQ.question}</span>
+                  <span style={{ color: 'var(--book-text-h4)', fontWeight: 'bold' }}>
+                    {subQ.letter}){' '}
+                  </span>
+                  <span style={{ color: 'var(--book-text-body)' }}>
+                    {subQ.question}
+                  </span>
                 </p>
                 <textarea
                   value={subUserAnswer}
-                  onChange={(e) => onAnswerChange(questionId, subQuestionId, e.target.value)}
+                  onChange={(e) =>
+                    onAnswerChange(questionId, subQuestionId, e.target.value)
+                  }
                   placeholder={subQ.placeholder || 'Digite sua resposta aqui...'}
                   disabled={showResults}
-                  className="w-full p-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent resize-y min-h-[80px] text-black"
+                  className="w-full p-3 border rounded-lg focus:outline-none resize-y min-h-[80px]"
                   style={{
-                    fontFamily: 'Ubuntu, sans-serif',
+                    fontFamily: 'var(--book-font-body, Ubuntu, sans-serif)',
+                    borderColor: 'var(--book-interactive-accent, #d1d5db)',
                   }}
                 />
               </div>
@@ -169,4 +187,3 @@ function QuestionTableFill({
 }
 
 export default QuestionTableFill;
-
