@@ -80,11 +80,10 @@ function TableOfContents({ contrastMode = 'default' }: { contrastMode?: Contrast
         <div className="flex-1 flex flex-col md:flex-row md:items-center md:justify-between gap-6">
           <div className="flex-1 flex flex-col gap-3">
             <p
-              className="font-ubuntu text-sm md:text-base"
+              className="book-small-text font-ubuntu"
               style={{
                 color: 'var(--book-chapter-label, #0E3B5D)',
                 fontWeight: 400,
-                lineHeight: 'normal',
               }}
             >
               Clique no botão abaixo para acessar o tutorial de uso do livro digital
@@ -106,7 +105,7 @@ function TableOfContents({ contrastMode = 'default' }: { contrastMode?: Contrast
                         borderRadius: '30px',
                         color: 'var(--book-interactive-accent)',
                         fontFamily: 'var(--book-font-body)',
-                        fontSize: '12px',
+                        fontSize: 'var(--book-cta-size, 12px)',
                         fontWeight: 700,
                         lineHeight: '1.4em',
                         textTransform: 'uppercase',
@@ -120,7 +119,7 @@ function TableOfContents({ contrastMode = 'default' }: { contrastMode?: Contrast
                         borderRadius: '30px',
                         color: 'var(--book-toc-cta-text, #ffffff)',
                         fontFamily: 'var(--book-font-body)',
-                        fontSize: '12px',
+                        fontSize: 'var(--book-cta-size, 12px)',
                         fontWeight: 700,
                         lineHeight: '1.4em',
                         textTransform: 'uppercase',
@@ -163,10 +162,9 @@ function TableOfContents({ contrastMode = 'default' }: { contrastMode?: Contrast
               )}
             </a>
             <span
-              className="mt-2 text-xs md:text-sm"
+              className="book-small-text mt-2"
               style={{
                 color: 'var(--book-chapter-label, #0E3B5D)',
-                fontSize: '14px',
               }}
             >
               se preferir, leia o QR

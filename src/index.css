@@ -69,6 +69,23 @@
   line-height: var(--book-line-height, 1.5);
 }
 
+/* Textos editoriais menores também acompanham o controle de tamanho da fonte. */
+.book-reading-column .text-\[10px\],
+.book-reading-column p[style*='font-size: 10px'] {
+  font-size: var(--book-caption-size, 10px) !important;
+  line-height: var(--book-line-height, 1.5) !important;
+}
+
+.book-reading-column .text-\[13px\] {
+  font-size: var(--book-note-size, 13px) !important;
+  line-height: var(--book-line-height, 1.5) !important;
+}
+
+.book-reading-column .book-small-text {
+  font-size: var(--book-small-size, 14px);
+  line-height: var(--book-line-height, 1.5);
+}
+
 /* Remove grifos amarelos hardcoded quando um modo de acessibilidade/contraste estiver ativo. */
 .book-reading-root:not([data-a11y-contrast-mode='default']) .book-inline-highlight {
   background-color: transparent !important;

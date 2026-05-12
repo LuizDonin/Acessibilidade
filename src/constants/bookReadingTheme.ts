@@ -168,6 +168,10 @@ const BASE_BODY_PX = 16;
 const BASE_H2_PX = 36;
 const BASE_H3_PX = 26;
 const BASE_H4_PX = 20;
+const BASE_SMALL_PX = 14;
+const BASE_NOTE_PX = 13;
+const BASE_CAPTION_PX = 10;
+const BASE_CTA_PX = 12;
 
 export function getThemeLayer(mode: ContrastMode): ThemeLayer {
   if (mode === 'default') return DEFAULT_THEME;
@@ -214,6 +218,10 @@ export function buildBookReadingStyle(
     '--book-h2-size': `${BASE_H2_PX * scale}px`,
     '--book-h3-size': `${BASE_H3_PX * scale}px`,
     '--book-h4-size': `${BASE_H4_PX * scale}px`,
+    '--book-small-size': `${BASE_SMALL_PX * scale}px`,
+    '--book-note-size': `${BASE_NOTE_PX * scale}px`,
+    '--book-caption-size': `${BASE_CAPTION_PX * scale}px`,
+    '--book-cta-size': `${BASE_CTA_PX * scale}px`,
     '--book-line-height': String(lh),
     '--book-body-weight': String(fontW),
   } as CSSProperties;

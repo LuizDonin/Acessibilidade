@@ -9,8 +9,8 @@ function MinhaVersao() {
         <h2
           style={{
             color: 'var(--book-chapter-label, #0E3B5D)',
-            fontFamily: 'hwt-artz',
-            fontSize: '26px',
+            fontFamily: 'var(--book-font-heading, hwt-artz, sans-serif)',
+            fontSize: 'var(--book-h3-size, 26px)',
             fontStyle: 'normal',
             fontWeight: 700,
             lineHeight: 'normal',

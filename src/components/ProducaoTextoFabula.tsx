@@ -83,8 +83,8 @@ function ProducaoTextoFabula({ contrastMode = 'default' }: ProducaoTextoFabulaPr
         <h2
           style={{
             color: 'var(--book-chapter-label, #0E3B5D)',
-            fontFamily: 'hwt-artz',
-            fontSize: '26px',
+            fontFamily: 'var(--book-font-heading, hwt-artz, sans-serif)',
+            fontSize: 'var(--book-h3-size, 26px)',
             fontStyle: 'normal',
             fontWeight: 700,
             lineHeight: 'normal',
@@ -102,8 +102,8 @@ function ProducaoTextoFabula({ contrastMode = 'default' }: ProducaoTextoFabulaPr
         className="w-full p-4 border-2 border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent resize-y min-h-[400px] text-black mb-6"
         style={{
           fontFamily: 'var(--book-font-body)',
-          fontSize: '14px',
-          lineHeight: '1.6',
+          fontSize: 'var(--book-body-size, 16px)',
+          lineHeight: 'var(--book-line-height, 1.6)',
         }}
       />
 
