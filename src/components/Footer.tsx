@@ -19,10 +19,10 @@ function Footer() {
                 color: '#000',
                 textAlign: 'center',
                 fontFamily: 'var(--book-font-body)',
-                fontSize: '12px',
+                fontSize: 'var(--book-cta-size, 12px)',
                 fontStyle: 'normal',
                 fontWeight: '400',
-                lineHeight: 'normal',
+                lineHeight: 'var(--book-line-height, 1.5)',
                 textTransform: 'uppercase',
             }}>
                 É um Selo Editorial da Companhia Brasileira de Educação e

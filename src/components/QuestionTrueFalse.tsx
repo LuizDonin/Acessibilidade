@@ -46,7 +46,7 @@ function QuestionTrueFalse({
                     return (
                       <label
                         key={String(value)}
-                        className={`flex items-center justify-center w-8 h-8 rounded cursor-pointer transition-colors text-sm font-semibold ${
+                        className={`book-true-false-option flex items-center justify-center rounded cursor-pointer transition-colors font-semibold ${
                           isSelected
                             ? showResults && isCorrect
                               ? 'bg-green-200 border-2 border-green-600 text-green-800'

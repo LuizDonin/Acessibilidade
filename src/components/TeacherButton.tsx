@@ -33,7 +33,7 @@ function TeacherButton({
         borderRadius: '0 30px 30px 0',
         color: 'white',
         fontFamily: 'var(--book-font-body)',
-        fontSize: '12px',
+        fontSize: 'var(--book-cta-size, 12px)',
         fontWeight: 700,
         lineHeight: '1.4em',
         textTransform: 'uppercase',

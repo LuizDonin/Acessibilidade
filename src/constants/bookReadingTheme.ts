@@ -172,6 +172,9 @@ const BASE_SMALL_PX = 14;
 const BASE_NOTE_PX = 13;
 const BASE_CAPTION_PX = 10;
 const BASE_CTA_PX = 12;
+const BASE_COVER_TITLE_PX = 48;
+const BASE_COVER_SUBTITLE_PX = 24;
+const BASE_CHOICE_CONTROL_PX = 32;
 
 export function getThemeLayer(mode: ContrastMode): ThemeLayer {
   if (mode === 'default') return DEFAULT_THEME;
@@ -222,6 +225,9 @@ export function buildBookReadingStyle(
     '--book-note-size': `${BASE_NOTE_PX * scale}px`,
     '--book-caption-size': `${BASE_CAPTION_PX * scale}px`,
     '--book-cta-size': `${BASE_CTA_PX * scale}px`,
+    '--book-cover-title-size': `${BASE_COVER_TITLE_PX * scale}px`,
+    '--book-cover-subtitle-size': `${BASE_COVER_SUBTITLE_PX * scale}px`,
+    '--book-choice-control-size': `${BASE_CHOICE_CONTROL_PX * scale}px`,
     '--book-line-height': String(lh),
     '--book-body-weight': String(fontW),
   } as CSSProperties;

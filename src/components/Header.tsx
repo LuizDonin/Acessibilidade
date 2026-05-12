@@ -20,7 +20,7 @@ function Header() {
               style={{
                 WebkitTextStroke: '1.5px #000000',
                 fontWeight: 800,
-                fontSize: '48px',
+                fontSize: 'var(--book-cover-title-size, 48px)',
               }}
             >
               PRODUÇÃO DE TEXTOS
@@ -30,7 +30,7 @@ function Header() {
               style={{
                 backgroundColor: '#9C2F4B',
                 fontWeight: 700,
-                fontSize: '24px',
+                fontSize: 'var(--book-cover-subtitle-size, 24px)',
 
               }}
             >

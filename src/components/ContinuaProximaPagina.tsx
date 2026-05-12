@@ -6,6 +6,8 @@ function ContinuaProximaPagina() {
                    text-white text-sm font-semibold -bottom-3"
         style={{
           fontFamily: 'var(--book-font-body)',
+          fontSize: 'var(--book-small-size, 14px)',
+          lineHeight: 'var(--book-line-height, 1.5)',
         }}
       >
         continua na próxima página

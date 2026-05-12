@@ -28,6 +28,8 @@
 
 .chapter-label {
   color: var(--book-chapter-label, #0e3b5d);
+  font-size: var(--book-small-size, 14px);
+  line-height: var(--book-line-height, 1.5);
 }
 
 .chapter-title-h2 {
@@ -84,6 +86,46 @@
 .book-reading-column .book-small-text {
   font-size: var(--book-small-size, 14px);
   line-height: var(--book-line-height, 1.5);
+}
+
+.book-reading-column
+  :is(.book-data-table, .book-question-table)
+  :is(th, td) {
+  font-size: var(--book-body-size, 16px) !important;
+  line-height: var(--book-line-height, 1.5) !important;
+}
+
+.book-reading-column :is(textarea, label) {
+  font-size: var(--book-body-size, 16px) !important;
+  line-height: var(--book-line-height, 1.5) !important;
+}
+
+.book-reading-column label .text-sm {
+  font-size: var(--book-small-size, 14px) !important;
+}
+
+.book-reading-column .book-true-false-option {
+  width: var(--book-choice-control-size, 32px) !important;
+  height: var(--book-choice-control-size, 32px) !important;
+  min-width: var(--book-choice-control-size, 32px);
+  min-height: var(--book-choice-control-size, 32px);
+  font-size: var(--book-body-size, 16px) !important;
+  line-height: 1 !important;
+}
+
+.book-reading-column .chapter-content :is(.text-xs, .text-sm, .text-base) {
+  font-size: var(--book-body-size, 16px) !important;
+  line-height: var(--book-line-height, 1.5) !important;
+}
+
+.book-reading-column .chapter-content .text-lg {
+  font-size: var(--book-h4-size, 20px) !important;
+  line-height: var(--book-line-height, 1.5) !important;
+}
+
+.book-reading-column .chapter-content :is(.text-xl, .text-2xl) {
+  font-size: var(--book-h3-size, 26px) !important;
+  line-height: normal !important;
 }
 
 /* Remove grifos amarelos hardcoded quando um modo de acessibilidade/contraste estiver ativo. */
