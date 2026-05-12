@@ -34,7 +34,7 @@ function TeacherButton({
         color: 'white',
         fontFamily: 'var(--book-font-body)',
         fontSize: 'var(--book-cta-size, 12px)',
-        fontWeight: 700,
+        fontWeight: 'var(--book-heading-weight, 700)',
         lineHeight: '1.4em',
         textTransform: 'uppercase',
         textDecoration: 'none',
@@ -159,8 +159,11 @@ function TeacherButton({
                                     color: isModo1
                                         ? 'var(--book-chapter-title)'
                                         : '#BF3154',
-                                    fontFamily: "'hwt-artz', sans-serif",
+                                    fontFamily:
+                                        'var(--book-font-heading, hwt-artz, sans-serif)',
                                     fontSize: 'var(--book-h3-size, 26px)',
+                                    fontWeight:
+                                        'var(--book-heading-weight, 700)',
                                     lineHeight: 'normal',
                                 }}
                             >

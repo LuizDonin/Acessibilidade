@@ -19,7 +19,8 @@ function Header() {
               className="font-hwtArtz font-bold"
               style={{
                 WebkitTextStroke: '1.5px #000000',
-                fontWeight: 800,
+                fontFamily: 'var(--book-font-heading, hwt-artz, sans-serif)',
+                fontWeight: 'var(--book-cover-heading-weight, 800)',
                 fontSize: 'var(--book-cover-title-size, 48px)',
               }}
             >
@@ -29,7 +30,8 @@ function Header() {
               className="text-white font-hwtArtz rounded-[20px] px-4 py-2 inline-block w-fit mt-4"
               style={{
                 backgroundColor: '#9C2F4B',
-                fontWeight: 700,
+                fontFamily: 'var(--book-font-heading, hwt-artz, sans-serif)',
+                fontWeight: 'var(--book-heading-weight, 700)',
                 fontSize: 'var(--book-cover-subtitle-size, 24px)',
 
               }}

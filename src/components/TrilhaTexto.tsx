@@ -10,11 +10,12 @@ function TrilhaTexto() {
         style={{
           // Alinha com as cores do Modo 1 (azul claro) via tema.
           color: 'var(--book-chapter-label, #0E3B5D)',
-          fontFamily: 'hwt-artz',
+          fontFamily: 'var(--book-font-heading, hwt-artz, sans-serif)',
           fontSize: 'var(--book-h3-size, 26px)',
           fontStyle: 'normal',
-          fontWeight: 700,
+          fontWeight: 'var(--book-heading-weight, 700)',
           lineHeight: 'normal',
+          textTransform: 'uppercase',
         }}
       >
         Na trilha do texto

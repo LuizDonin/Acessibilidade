@@ -7,6 +7,7 @@ function ContinuaProximaPagina() {
         style={{
           fontFamily: 'var(--book-font-body)',
           fontSize: 'var(--book-small-size, 14px)',
+          fontWeight: 'var(--book-body-weight, 400)',
           lineHeight: 'var(--book-line-height, 1.5)',
         }}
       >

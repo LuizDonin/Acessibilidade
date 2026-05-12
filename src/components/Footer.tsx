@@ -21,7 +21,7 @@ function Footer() {
                 fontFamily: 'var(--book-font-body)',
                 fontSize: 'var(--book-cta-size, 12px)',
                 fontStyle: 'normal',
-                fontWeight: '400',
+                fontWeight: 'var(--book-body-weight, 400)',
                 lineHeight: 'var(--book-line-height, 1.5)',
                 textTransform: 'uppercase',
             }}>

@@ -24,7 +24,7 @@ function DownloadButton({
     color: 'white',
     fontFamily: 'var(--book-font-body)',
     fontSize: 'var(--book-cta-size, 12px)',
-    fontWeight: 700,
+    fontWeight: 'var(--book-heading-weight, 700)',
     lineHeight: '1.4em',
     textTransform: 'uppercase',
     textDecoration: 'none',

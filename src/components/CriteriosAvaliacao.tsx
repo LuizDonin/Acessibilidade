@@ -36,7 +36,7 @@ function CriteriosAvaliacao({
           className="book-question-table w-full border-collapse"
           style={{
             border: '3px solid var(--book-table-border, #0E3B5D)',
-            fontFamily: 'hwt-artz, sans-serif',
+            fontFamily: 'var(--book-font-body, Ubuntu, sans-serif)',
             minWidth: '100%',
           }}
         >
@@ -112,7 +112,7 @@ function CriteriosAvaliacao({
                       border: '3px solid var(--book-table-border, #0E3B5D)',
                       color: 'var(--book-chapter-label, #0E3B5D)',
                       backgroundColor: 'var(--book-bg-page, #ffffff)',
-                      fontFamily: 'hwt-artz, sans-serif',
+                      fontFamily: 'var(--book-font-body, Ubuntu, sans-serif)',
                       fontSize: '16px',
                       whiteSpace: 'normal',
                       wordBreak: 'break-word',

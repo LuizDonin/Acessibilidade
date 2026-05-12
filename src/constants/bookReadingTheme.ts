@@ -188,6 +188,12 @@ export function buildBookReadingStyle(
   const scale = prefs.fontScale;
   const lh = 1.5 * prefs.lineHeightScale;
   const fontW = prefs.boldBody ? 700 : 400;
+  const headingW = prefs.boldBody ? 900 : 700;
+  const coverHeadingW = prefs.boldBody ? 900 : 800;
+  const headingFont =
+    prefs.bodyFont === 'atkinson'
+      ? BODY_FONT_STACK[prefs.bodyFont]
+      : "'hwt-artz', sans-serif";
 
   return {
     '--book-bg-outer': layer.bookBgOuter,
@@ -216,7 +222,7 @@ export function buildBookReadingStyle(
     '--book-toc-cta-bg': layer.bookTocCtaBg,
     '--book-toc-cta-text': layer.bookTocCtaText,
     '--book-font-body': BODY_FONT_STACK[prefs.bodyFont],
-    '--book-font-heading': "'hwt-artz', sans-serif",
+    '--book-font-heading': headingFont,
     '--book-body-size': `${BASE_BODY_PX * scale}px`,
     '--book-h2-size': `${BASE_H2_PX * scale}px`,
     '--book-h3-size': `${BASE_H3_PX * scale}px`,
@@ -230,5 +236,7 @@ export function buildBookReadingStyle(
     '--book-choice-control-size': `${BASE_CHOICE_CONTROL_PX * scale}px`,
     '--book-line-height': String(lh),
     '--book-body-weight': String(fontW),
+    '--book-heading-weight': String(headingW),
+    '--book-cover-heading-weight': String(coverHeadingW),
   } as CSSProperties;
 }

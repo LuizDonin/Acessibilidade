@@ -96,8 +96,9 @@ function ProducaoTexto({
             fontFamily: 'var(--book-font-heading, hwt-artz, sans-serif)',
             fontSize: 'var(--book-h3-size, 26px)',
             fontStyle: 'normal',
-            fontWeight: 700,
+            fontWeight: 'var(--book-heading-weight, 700)',
             lineHeight: 'normal',
+            textTransform: 'uppercase',
           }}
         >
           {title}

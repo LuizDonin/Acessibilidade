@@ -12,8 +12,8 @@ function TableOfContents({ contrastMode = 'default' }: { contrastMode?: Contrast
   const linkStyle = {
     fontSize: 'var(--book-body-size, 16px)',
     fontStyle: 'normal' as const,
-    fontWeight: 500,
-    lineHeight: 'normal',
+    fontWeight: 'var(--book-body-weight, 400)',
+    lineHeight: 'var(--book-line-height, 1.5)',
   };
 
   return (
@@ -26,7 +26,7 @@ function TableOfContents({ contrastMode = 'default' }: { contrastMode?: Contrast
               style={{
                 fontSize: 'var(--book-h3-size, 28px)',
                 fontStyle: 'normal',
-                fontWeight: 800,
+                fontWeight: 'var(--book-cover-heading-weight, 800)',
                 lineHeight: 'normal',
               }}
             >
@@ -83,7 +83,7 @@ function TableOfContents({ contrastMode = 'default' }: { contrastMode?: Contrast
               className="book-small-text font-ubuntu"
               style={{
                 color: 'var(--book-chapter-label, #0E3B5D)',
-                fontWeight: 400,
+                fontWeight: 'var(--book-body-weight, 400)',
               }}
             >
               Clique no botão abaixo para acessar o tutorial de uso do livro digital
@@ -106,7 +106,7 @@ function TableOfContents({ contrastMode = 'default' }: { contrastMode?: Contrast
                         color: 'var(--book-interactive-accent)',
                         fontFamily: 'var(--book-font-body)',
                         fontSize: 'var(--book-cta-size, 12px)',
-                        fontWeight: 700,
+                        fontWeight: 'var(--book-heading-weight, 700)',
                         lineHeight: '1.4em',
                         textTransform: 'uppercase',
                         border: '2px solid var(--book-interactive-accent)',
@@ -120,7 +120,7 @@ function TableOfContents({ contrastMode = 'default' }: { contrastMode?: Contrast
                         color: 'var(--book-toc-cta-text, #ffffff)',
                         fontFamily: 'var(--book-font-body)',
                         fontSize: 'var(--book-cta-size, 12px)',
-                        fontWeight: 700,
+                        fontWeight: 'var(--book-heading-weight, 700)',
                         lineHeight: '1.4em',
                         textTransform: 'uppercase',
                         border: 'none',

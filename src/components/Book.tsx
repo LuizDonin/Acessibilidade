@@ -230,7 +230,7 @@ function Book() {
                     style={{
                       fontSize: '10px',
                       fontStyle: 'normal',
-                      fontWeight: 400,
+                      fontWeight: 'var(--book-body-weight, 400)',
                       lineHeight: 'normal',
                     }}
                   >
@@ -241,7 +241,7 @@ function Book() {
                     style={{
                       fontSize: '10px',
                       fontStyle: 'normal',
-                      fontWeight: 400,
+                      fontWeight: 'var(--book-body-weight, 400)',
                       lineHeight: 'normal',
                     }}
                   >
@@ -440,7 +440,7 @@ function Book() {
                     style={{
                       fontSize: '10px',
                       fontStyle: 'normal',
-                      fontWeight: 400,
+                      fontWeight: 'var(--book-body-weight, 400)',
                       lineHeight: 'normal',
                     }}
                   >
@@ -451,7 +451,7 @@ function Book() {
                     style={{
                       fontSize: '10px',
                       fontStyle: 'normal',
-                      fontWeight: 400,
+                      fontWeight: 'var(--book-body-weight, 400)',
                       lineHeight: 'normal',
                     }}
                   >

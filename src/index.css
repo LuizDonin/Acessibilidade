@@ -28,13 +28,17 @@
 
 .chapter-label {
   color: var(--book-chapter-label, #0e3b5d);
+  font-family: var(--book-font-body, 'Ubuntu', sans-serif);
   font-size: var(--book-small-size, 14px);
+  font-weight: var(--book-body-weight, 400);
   line-height: var(--book-line-height, 1.5);
 }
 
 .chapter-title-h2 {
   color: var(--book-chapter-title, #1e293b);
+  font-family: var(--book-font-heading, 'hwt-artz', sans-serif);
   font-size: var(--book-h2-size, 36px);
+  font-weight: var(--book-heading-weight, 700);
 }
 
 .chapter-content {
@@ -46,8 +50,9 @@
   font-family: var(--book-font-heading, 'hwt-artz', sans-serif);
   font-size: var(--book-h3-size, 26px);
   font-style: normal;
-  font-weight: 700;
+  font-weight: var(--book-heading-weight, 700);
   line-height: normal;
+  text-transform: uppercase;
 }
 
 .chapter-content h4 {
@@ -55,9 +60,10 @@
   font-family: var(--book-font-heading, 'hwt-artz', sans-serif);
   font-size: var(--book-h4-size, 20px);
   font-style: normal;
-  font-weight: 700;
+  font-weight: var(--book-heading-weight, 700);
   line-height: normal;
   padding: 10px 0;
+  text-transform: uppercase;
 }
 
 .chapter-content p,
@@ -74,34 +80,46 @@
 /* Textos editoriais menores também acompanham o controle de tamanho da fonte. */
 .book-reading-column .text-\[10px\],
 .book-reading-column p[style*='font-size: 10px'] {
+  font-family: var(--book-font-body, 'Ubuntu', sans-serif) !important;
   font-size: var(--book-caption-size, 10px) !important;
+  font-weight: var(--book-body-weight, 400) !important;
   line-height: var(--book-line-height, 1.5) !important;
 }
 
 .book-reading-column .text-\[13px\] {
+  font-family: var(--book-font-body, 'Ubuntu', sans-serif) !important;
   font-size: var(--book-note-size, 13px) !important;
+  font-weight: var(--book-body-weight, 400) !important;
   line-height: var(--book-line-height, 1.5) !important;
 }
 
 .book-reading-column .book-small-text {
+  font-family: var(--book-font-body, 'Ubuntu', sans-serif);
   font-size: var(--book-small-size, 14px);
+  font-weight: var(--book-body-weight, 400);
   line-height: var(--book-line-height, 1.5);
 }
 
 .book-reading-column
   :is(.book-data-table, .book-question-table)
   :is(th, td) {
+  font-family: var(--book-font-body, 'Ubuntu', sans-serif) !important;
   font-size: var(--book-body-size, 16px) !important;
+  font-weight: var(--book-body-weight, 400) !important;
   line-height: var(--book-line-height, 1.5) !important;
 }
 
 .book-reading-column :is(textarea, label) {
+  font-family: var(--book-font-body, 'Ubuntu', sans-serif) !important;
   font-size: var(--book-body-size, 16px) !important;
+  font-weight: var(--book-body-weight, 400) !important;
   line-height: var(--book-line-height, 1.5) !important;
 }
 
 .book-reading-column label .text-sm {
+  font-family: var(--book-font-body, 'Ubuntu', sans-serif) !important;
   font-size: var(--book-small-size, 14px) !important;
+  font-weight: var(--book-body-weight, 400) !important;
 }
 
 .book-reading-column .book-true-false-option {
@@ -109,23 +127,42 @@
   height: var(--book-choice-control-size, 32px) !important;
   min-width: var(--book-choice-control-size, 32px);
   min-height: var(--book-choice-control-size, 32px);
+  font-family: var(--book-font-body, 'Ubuntu', sans-serif) !important;
   font-size: var(--book-body-size, 16px) !important;
+  font-weight: var(--book-body-weight, 400) !important;
   line-height: 1 !important;
 }
 
 .book-reading-column .chapter-content :is(.text-xs, .text-sm, .text-base) {
+  font-family: var(--book-font-body, 'Ubuntu', sans-serif) !important;
   font-size: var(--book-body-size, 16px) !important;
+  font-weight: var(--book-body-weight, 400) !important;
   line-height: var(--book-line-height, 1.5) !important;
 }
 
 .book-reading-column .chapter-content .text-lg {
+  font-family: var(--book-font-heading, 'hwt-artz', sans-serif) !important;
   font-size: var(--book-h4-size, 20px) !important;
+  font-weight: var(--book-heading-weight, 700) !important;
   line-height: var(--book-line-height, 1.5) !important;
 }
 
 .book-reading-column .chapter-content :is(.text-xl, .text-2xl) {
+  font-family: var(--book-font-heading, 'hwt-artz', sans-serif) !important;
   font-size: var(--book-h3-size, 26px) !important;
+  font-weight: var(--book-heading-weight, 700) !important;
   line-height: normal !important;
+}
+
+.book-reading-column
+  :is(
+    strong,
+    .font-semibold,
+    .font-bold,
+    [style*='font-weight: bold'],
+    [style*='font-weight: 700']
+  ) {
+  font-weight: var(--book-heading-weight, 700) !important;
 }
 
 /* Remove grifos amarelos hardcoded quando um modo de acessibilidade/contraste estiver ativo. */
@@ -243,9 +280,11 @@ td {
 }
 .book-toc-nav h2 {
   color: var(--book-toc-heading, #0e3b5d);
+  font-family: var(--book-font-heading, 'hwt-artz', sans-serif);
 }
 .book-toc-nav .book-toc-link {
   color: var(--book-toc-link, #144468);
+  font-family: var(--book-font-body, 'Ubuntu', sans-serif);
 }
 
 /* QR do sumário no Modo 1: mesma cor de destaque dos botões (--book-interactive-accent) */

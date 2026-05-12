@@ -33,8 +33,9 @@ function CaixaTexto({ title, children, backgroundColor, columns }: CaixaTextoPro
             fontFamily: 'var(--book-font-heading, hwt-artz, sans-serif)',
             fontSize: 'var(--book-h4-size, 20px)',
             fontStyle: 'normal',
-            fontWeight: 700,
+            fontWeight: 'var(--book-heading-weight, 700)',
             lineHeight: 'normal',
+            textTransform: 'uppercase',
           }}
           className="mb-4"
         >
